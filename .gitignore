@@ -31,10 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/java/com/sunjh/xiyiji/dao/
-src/main/java/com/sunjh/xiyiji/data/convertor/
-src/main/java/com/sunjh/xiyiji/data/dto/
-src/main/java/com/sunjh/xiyiji/data/model/
-src/main/java/com/sunjh/xiyiji/data/vo/
-src/main/resources/static/
-src/main/resources/templates/
