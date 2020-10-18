@@ -16,4 +16,10 @@ public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name="name")
+    private String  name;
+
+    @Column(name="value")
+    private String  value;
 }
