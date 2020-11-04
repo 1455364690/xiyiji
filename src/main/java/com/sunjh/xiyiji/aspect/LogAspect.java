@@ -4,18 +4,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.sunjh.xiyiji.data.result.BaseResult;
 import lombok.extern.slf4j.Slf4j;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 /**
  * @author sunjh
@@ -26,61 +27,36 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 @Slf4j
 public class LogAspect {
-//    /**
-//     * ..表示包及子包 该方法代表controller层的所有方法  TODO 路径需要根据自己项目定义
-//     */
-//    @Pointcut("execution(* *(..))")
-//    public void controllerMethod() {
-//    }
-//
-//
-//    /**
-//     * 方法执行前
-//     *
-//     * @param joinPoint
-//     * @throws Exception
-//     */
-//    @Before("controllerMethod()")
-//    public void LogRequestInfo(JoinPoint joinPoint) throws Exception {
-//
-//        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-//        HttpServletRequest request = attributes.getRequest();
-//
-//        StringBuilder requestLog = new StringBuilder();
-//        Signature signature = joinPoint.getSignature();
-//        requestLog.append(((MethodSignature) signature).getMethod().getAnnotation(ApiOperation.class).value()).append("\t")
-//                .append("请求信息：").append("URL = {").append(request.getRequestURI()).append("},\t")
-//                .append("请求方式 = {").append(request.getMethod()).append("},\t")
-//                .append("请求IP = {").append(request.getRemoteAddr()).append("},\t")
-//                .append("类方法 = {").append(signature.getDeclaringTypeName()).append(".")
-//                .append(signature.getName()).append("},\t");
-//
-//        // 处理请求参数
-//        String[] paramNames = ((MethodSignature) signature).getParameterNames();
-//        Object[] paramValues = joinPoint.getArgs();
-//        int paramLength = null == paramNames ? 0 : paramNames.length;
-//        if (paramLength == 0) {
-//            requestLog.append("请求参数 = {} ");
-//        } else {
-//            requestLog.append("请求参数 = [");
-//            for (int i = 0; i < paramLength - 1; i++) {
-//                requestLog.append(paramNames[i]).append("=").append(JSONObject.toJSONString(paramValues[i])).append(",");
-//            }
-//            requestLog.append(paramNames[paramLength - 1]).append("=").append(JSONObject.toJSONString(paramValues[paramLength - 1])).append("]");
-//        }
-//
-//        log.info(requestLog.toString());
-//    }
-//
-//
-//    /**
-//     * 方法执行后
-//     *
-//     * @param resultVO
-//     * @throws Exception
-//     */
-//    @AfterReturning(returning = "resultVO", pointcut = "controllerMethod()")
-//    public void logResultVOInfo(BaseResult resultVO) throws Exception {
-//        log.info("请求结果：" + resultVO.getCode() + "\t" + resultVO.getMessage());
-//    }
+    private static final Log LOG = LogFactory.getLog(LogAspect.class);
+    @Pointcut("execution(* com.sunjh.xiyiji..*.*(..))")
+    public void logPointcut() {
+    }
+    //around(和上面的方法名一样)
+    @Around("logPointcut()")
+    public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        LOG.info("=====================================Method  start====================================");
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        long start = System.currentTimeMillis();
+        try {
+            Object result = joinPoint.proceed();
+            long end = System.currentTimeMillis();
+            LOG.info("请求地址:" + request.getRequestURI());
+            LOG.info("用户IP:" + request.getRemoteAddr());
+            LOG.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+            LOG.info("参数: " + Arrays.toString(joinPoint.getArgs()));
+            LOG.info("执行时间: " + (end - start) + " ms!");
+            LOG.info("=====================================Method  End====================================");
+            return result;
+        } catch (Throwable e) {
+            long end = System.currentTimeMillis();
+            LOG.info("URL:" + request.getRequestURI());
+            LOG.info("IP:" + request.getRemoteAddr());
+            LOG.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+            LOG.info("ARGS : " + Arrays.toString(joinPoint.getArgs()));
+            LOG.info("执行时间: " + (end - start) + " ms!");
+            LOG.info("=====================================Method  End====================================");
+            throw e;
+        }
+    }
 }
