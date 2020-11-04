@@ -23,10 +23,10 @@ import java.util.stream.Stream;
  */
 @Aspect
 @Component
-public class LogService {
-    private final static Logger logger = LoggerFactory.getLogger(LogService.class);
+public class LogDaoAspect {
+    private final static Logger logger = LoggerFactory.getLogger(LogDaoAspect.class);
 
-    @Pointcut("execution(public * com.sunjh.xiyiji.service..*.*(..))")
+    @Pointcut("execution(public * com.sunjh.xiyiji.dao..*.*(..))")
     public void webLog() {
     }
 

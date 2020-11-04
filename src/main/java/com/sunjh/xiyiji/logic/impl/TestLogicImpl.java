@@ -1,6 +1,6 @@
-package com.sunjh.xiyiji.service.impl;
+package com.sunjh.xiyiji.logic.impl;
 
-import com.sunjh.xiyiji.dao.TestDao;
+import com.sunjh.xiyiji.logic.TestLogic;
 import com.sunjh.xiyiji.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,15 +8,15 @@ import org.springframework.stereotype.Service;
 /**
  * @author sunjh
  * @version 1.0
- * @date 2020/10/16 10:43 上午
+ * @date 2020/11/4 3:21 下午
  */
 @Service
-public class TestServiceImpl implements TestService {
+public class TestLogicImpl implements TestLogic {
     @Autowired
-    private TestDao testDao;
+    private TestService testService;
 
     @Override
     public String sayHello() {
-        return "hello service! " + testDao.findOneById(1L).getName();
+        return "hello logic!" + testService.sayHello();
     }
 }

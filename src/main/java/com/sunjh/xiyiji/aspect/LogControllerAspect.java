@@ -2,16 +2,10 @@ package com.sunjh.xiyiji.aspect;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sunjh.xiyiji.data.result.BaseResult;
 import lombok.extern.slf4j.Slf4j;
-import io.swagger.annotations.ApiOperation;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -32,8 +26,8 @@ import java.util.Arrays;
 @Aspect
 @Component
 @Slf4j
-public class LogAspect {
-    private final static Logger logger = LoggerFactory.getLogger(LogAspect.class);
+public class LogControllerAspect {
+    private final static Logger logger = LoggerFactory.getLogger(LogControllerAspect.class);
 
     /** 以 controller 包下定义的所有请求为切入点 */
     @Pointcut("execution(public * com.sunjh.xiyiji.controller..*.*(..))")
