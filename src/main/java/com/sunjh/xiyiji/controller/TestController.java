@@ -1,6 +1,8 @@
 package com.sunjh.xiyiji.controller;
 
 import com.sunjh.xiyiji.data.result.BaseResult;
+import com.sunjh.xiyiji.service.TestService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,13 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class TestController extends BaseController {
+
+    @Autowired
+    private TestService testService;
+
     @GetMapping("/test/get")
     public BaseResult<String> testGet() {
         BaseResult<String> result = new BaseResult<>();
         result.setCode("200");
         result.setMessage("success");
         result.setSuccess(true);
-        result.setData("get success");
+        result.setData(testService.sayHello());
         return result;
     }
 
