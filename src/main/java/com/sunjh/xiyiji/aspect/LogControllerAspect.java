@@ -85,8 +85,6 @@ public class LogControllerAspect {
     @After("webLog()")
     public void doAfter() throws Throwable {
         logger.info("=========================================== End ===========================================");
-        // 每个请求之间空一行
-        logger.info("");
     }
 
     /**
