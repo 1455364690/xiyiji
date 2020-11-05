@@ -1,0 +1,159 @@
+2020-11-04 15:45:11.240  INFO 30727 --- [main] com.sunjh.xiyiji.XiyijiApplication       : Starting XiyijiApplication on sunjhdeMacBook-Pro.local with PID 30727 (/Users/sunjh/IdeaProjects/xiyiji/target/classes started by sunjh in /Users/sunjh/IdeaProjects/xiyiji)
+2020-11-04 15:45:11.248  INFO 30727 --- [main] com.sunjh.xiyiji.XiyijiApplication       : No active profile set, falling back to default profiles: default
+2020-11-04 15:45:11.740  INFO 30727 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-04 15:45:11.790  INFO 30727 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 42ms. Found 1 JPA repository interfaces.
+2020-11-04 15:45:12.295  INFO 30727 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-11-04 15:45:12.300  INFO 30727 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-11-04 15:45:12.301  INFO 30727 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
+2020-11-04 15:45:12.356  INFO 30727 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-11-04 15:45:12.356  INFO 30727 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1079 ms
+2020-11-04 15:45:12.526  INFO 30727 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-04 15:45:12.552  INFO 30727 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2020-11-04 15:45:13.404  INFO 30727 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2020-11-04 15:45:13.434  INFO 30727 --- [task-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-04 15:45:13.463  INFO 30727 --- [task-1] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
+2020-11-04 15:45:13.575  WARN 30727 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-04 15:45:13.589  INFO 30727 --- [task-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-04 15:45:13.658  INFO 30727 --- [task-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-04 15:45:13.982  INFO 30727 --- [task-1] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-04 15:45:13.987  INFO 30727 --- [task-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-04 15:45:14.055  WARN 30727 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2020-11-04 15:45:14.363  INFO 30727 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-11-04 15:45:14.364  INFO 30727 --- [main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2020-11-04 15:45:14.671  INFO 30727 --- [main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2020-11-04 15:45:14.679  INFO 30727 --- [main] com.sunjh.xiyiji.XiyijiApplication       : Started XiyijiApplication in 3.667 seconds (JVM running for 4.011)
+2020-11-04 15:45:22.157  INFO 30727 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-11-04 15:45:22.157  INFO 30727 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-11-04 15:45:22.169  INFO 30727 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 12 ms
+2020-11-04 15:45:22.223  INFO 30727 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : ========================================== Start ==========================================
+2020-11-04 15:45:22.224  INFO 30727 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : URL            : http://127.0.0.1:8080/test/get
+2020-11-04 15:45:22.224  INFO 30727 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : HTTP Method    : GET
+2020-11-04 15:45:22.225  INFO 30727 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : Class Method   : com.sunjh.xiyiji.controller.TestController.testGet
+2020-11-04 15:45:22.225  INFO 30727 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : IP             : 127.0.0.1
+2020-11-04 15:45:22.225  INFO 30727 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : Request Args   : []
+2020-11-04 15:45:22.228  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : ========================================== Start ==========================================
+2020-11-04 15:45:22.228  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : Signature    : String com.sunjh.xiyiji.logic.impl.TestLogicImpl.sayHello()
+2020-11-04 15:45:22.230  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : Args         : []
+2020-11-04 15:45:22.233  INFO 30727 --- [http-nio-8080-exec-1] c.sunjh.xiyiji.aspect.LogServiceAspect   : ========================================== Start ==========================================
+2020-11-04 15:45:22.233  INFO 30727 --- [http-nio-8080-exec-1] c.sunjh.xiyiji.aspect.LogServiceAspect   : Signature    : String com.sunjh.xiyiji.service.impl.TestServiceImpl.sayHello()
+2020-11-04 15:45:22.233  INFO 30727 --- [http-nio-8080-exec-1] c.sunjh.xiyiji.aspect.LogServiceAspect   : Args         : []
+2020-11-04 15:45:22.236  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogDaoAspect     : ========================================== Start ==========================================
+2020-11-04 15:45:22.236  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogDaoAspect     : Signature    : Test com.sunjh.xiyiji.dao.TestDao.findOneById(Long)
+2020-11-04 15:45:22.236  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogDaoAspect     : Args         : [1]
+2020-11-04 15:45:22.488  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogDaoAspect     : =========================================== End ===========================================
+2020-11-04 15:45:22.488  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogDaoAspect     : 
+2020-11-04 15:45:22.488  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogDaoAspect     : Time-Consuming : 252 ms
+2020-11-04 15:45:22.488  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogDaoAspect     : result: Test(id=1, name=张三, value=慕测研究院)
+2020-11-04 15:45:22.489  INFO 30727 --- [http-nio-8080-exec-1] c.sunjh.xiyiji.aspect.LogServiceAspect   : =========================================== End ===========================================
+2020-11-04 15:45:22.489  INFO 30727 --- [http-nio-8080-exec-1] c.sunjh.xiyiji.aspect.LogServiceAspect   : 
+2020-11-04 15:45:22.489  INFO 30727 --- [http-nio-8080-exec-1] c.sunjh.xiyiji.aspect.LogServiceAspect   : Time-Consuming : 256 ms
+2020-11-04 15:45:22.489  INFO 30727 --- [http-nio-8080-exec-1] c.sunjh.xiyiji.aspect.LogServiceAspect   : result: hello service! 张三
+2020-11-04 15:45:22.489  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : =========================================== End ===========================================
+2020-11-04 15:45:22.489  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : 
+2020-11-04 15:45:22.489  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : Time-Consuming : 261 ms
+2020-11-04 15:45:22.489  INFO 30727 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : result: hello logic!hello service! 张三
+2020-11-04 15:45:22.489  INFO 30727 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : =========================================== End ===========================================
+2020-11-04 15:45:22.489  INFO 30727 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : 
+2020-11-04 15:45:22.508  INFO 30727 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : Response Args  : {"code":"200","data":"hello logic!hello service! 张三","message":"success","success":true}
+2020-11-04 15:45:22.508  INFO 30727 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : Time-Consuming : 323 ms
+2020-11-04 15:45:59.971  INFO 30727 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-04 15:45:59.972  INFO 30727 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-04 15:45:59.972  INFO 30727 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2020-11-04 15:45:59.975  INFO 30727 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2020-11-04 15:46:04.588  INFO 30751 --- [main] com.sunjh.xiyiji.XiyijiApplication       : Starting XiyijiApplication on sunjhdeMacBook-Pro.local with PID 30751 (/Users/sunjh/IdeaProjects/xiyiji/target/classes started by sunjh in /Users/sunjh/IdeaProjects/xiyiji)
+2020-11-04 15:46:04.593  INFO 30751 --- [main] com.sunjh.xiyiji.XiyijiApplication       : No active profile set, falling back to default profiles: default
+2020-11-04 15:46:05.112  INFO 30751 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-04 15:46:05.157  INFO 30751 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 40ms. Found 1 JPA repository interfaces.
+2020-11-04 15:46:05.731  INFO 30751 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-11-04 15:46:05.737  INFO 30751 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-11-04 15:46:05.737  INFO 30751 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
+2020-11-04 15:46:05.787  INFO 30751 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-11-04 15:46:05.787  INFO 30751 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1143 ms
+2020-11-04 15:46:05.941  INFO 30751 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-04 15:46:05.965  INFO 30751 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2020-11-04 15:46:06.751  INFO 30751 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2020-11-04 15:46:06.783  INFO 30751 --- [task-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-04 15:46:06.811  INFO 30751 --- [task-1] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
+2020-11-04 15:46:06.905  WARN 30751 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-04 15:46:06.920  INFO 30751 --- [task-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-04 15:46:06.984  INFO 30751 --- [task-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-04 15:46:07.318  INFO 30751 --- [task-1] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-04 15:46:07.324  INFO 30751 --- [task-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-04 15:46:07.414  WARN 30751 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2020-11-04 15:46:07.727  INFO 30751 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-11-04 15:46:07.729  INFO 30751 --- [main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2020-11-04 15:46:08.093  INFO 30751 --- [main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2020-11-04 15:46:08.101  INFO 30751 --- [main] com.sunjh.xiyiji.XiyijiApplication       : Started XiyijiApplication in 3.852 seconds (JVM running for 4.222)
+2020-11-04 15:46:12.050  INFO 30751 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-11-04 15:46:12.051  INFO 30751 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-11-04 15:46:12.063  INFO 30751 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 12 ms
+2020-11-04 15:46:12.104  INFO 30751 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : ========================================== Start ==========================================
+2020-11-04 15:46:12.105  INFO 30751 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : URL            : http://127.0.0.1:8080/test/get
+2020-11-04 15:46:12.105  INFO 30751 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : HTTP Method    : GET
+2020-11-04 15:46:12.106  INFO 30751 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : Class Method   : com.sunjh.xiyiji.controller.TestController.testGet
+2020-11-04 15:46:12.106  INFO 30751 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : IP             : 127.0.0.1
+2020-11-04 15:46:12.106  INFO 30751 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : Request Args   : []
+2020-11-04 15:46:12.109  INFO 30751 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : ========================================== Start ==========================================
+2020-11-04 15:46:12.109  INFO 30751 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : Signature    : String com.sunjh.xiyiji.logic.impl.TestLogicImpl.sayHello()
+2020-11-04 15:46:12.111  INFO 30751 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : Args         : []
+2020-11-04 15:46:12.113  INFO 30751 --- [http-nio-8080-exec-1] c.sunjh.xiyiji.aspect.LogServiceAspect   : ========================================== Start ==========================================
+2020-11-04 15:46:12.113  INFO 30751 --- [http-nio-8080-exec-1] c.sunjh.xiyiji.aspect.LogServiceAspect   : Signature    : String com.sunjh.xiyiji.service.impl.TestServiceImpl.sayHello()
+2020-11-04 15:46:12.113  INFO 30751 --- [http-nio-8080-exec-1] c.sunjh.xiyiji.aspect.LogServiceAspect   : Args         : []
+2020-11-04 15:46:12.116  INFO 30751 --- [http-nio-8080-exec-1] c.sunjh.xiyiji.aspect.LogServiceAspect   : =========================================== End ===========================================
+2020-11-04 15:46:12.116  INFO 30751 --- [http-nio-8080-exec-1] c.sunjh.xiyiji.aspect.LogServiceAspect   : 
+2020-11-04 15:46:12.116  INFO 30751 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : =========================================== End ===========================================
+2020-11-04 15:46:12.116  INFO 30751 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : 
+2020-11-04 15:46:12.116  INFO 30751 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : =========================================== End ===========================================
+2020-11-04 15:46:12.117  INFO 30751 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : 
+2020-11-04 15:46:12.118  INFO 30751 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : Response Args  : null
+2020-11-04 15:46:12.118  INFO 30751 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : Time-Consuming : 38 ms
+2020-11-04 15:46:44.728  INFO 30751 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-04 15:46:44.729  INFO 30751 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-04 15:46:44.729  INFO 30751 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2020-11-04 15:46:44.733  INFO 30751 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2020-11-04 15:46:48.925  INFO 30761 --- [main] com.sunjh.xiyiji.XiyijiApplication       : Starting XiyijiApplication on sunjhdeMacBook-Pro.local with PID 30761 (/Users/sunjh/IdeaProjects/xiyiji/target/classes started by sunjh in /Users/sunjh/IdeaProjects/xiyiji)
+2020-11-04 15:46:48.927  INFO 30761 --- [main] com.sunjh.xiyiji.XiyijiApplication       : No active profile set, falling back to default profiles: default
+2020-11-04 15:46:49.344  INFO 30761 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-04 15:46:49.387  INFO 30761 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 38ms. Found 1 JPA repository interfaces.
+2020-11-04 15:46:49.941  INFO 30761 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-11-04 15:46:49.947  INFO 30761 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-11-04 15:46:49.947  INFO 30761 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
+2020-11-04 15:46:50.004  INFO 30761 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-11-04 15:46:50.004  INFO 30761 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1050 ms
+2020-11-04 15:46:50.163  INFO 30761 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-04 15:46:50.188  INFO 30761 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2020-11-04 15:46:50.919  INFO 30761 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2020-11-04 15:46:50.947  INFO 30761 --- [task-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-04 15:46:50.974  INFO 30761 --- [task-1] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
+2020-11-04 15:46:51.071  WARN 30761 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-04 15:46:51.083  INFO 30761 --- [task-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-04 15:46:51.146  INFO 30761 --- [task-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-04 15:46:51.453  INFO 30761 --- [task-1] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-04 15:46:51.458  INFO 30761 --- [task-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-04 15:46:51.535  WARN 30761 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2020-11-04 15:46:51.832  INFO 30761 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-11-04 15:46:51.834  INFO 30761 --- [main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2020-11-04 15:46:52.166  INFO 30761 --- [main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2020-11-04 15:46:52.173  INFO 30761 --- [main] com.sunjh.xiyiji.XiyijiApplication       : Started XiyijiApplication in 3.476 seconds (JVM running for 3.821)
+2020-11-04 15:46:55.941  INFO 30761 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-11-04 15:46:55.942  INFO 30761 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-11-04 15:46:55.955  INFO 30761 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 13 ms
+2020-11-04 15:46:55.997  INFO 30761 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : ========================================== Start ==========================================
+2020-11-04 15:46:55.997  INFO 30761 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : URL            : http://127.0.0.1:8080/test/get
+2020-11-04 15:46:55.997  INFO 30761 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : HTTP Method    : GET
+2020-11-04 15:46:55.998  INFO 30761 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : Class Method   : com.sunjh.xiyiji.controller.TestController.testGet
+2020-11-04 15:46:55.998  INFO 30761 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : IP             : 127.0.0.1
+2020-11-04 15:46:55.998  INFO 30761 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : Request Args   : []
+2020-11-04 15:46:56.002  INFO 30761 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : ========================================== Start ==========================================
+2020-11-04 15:46:56.002  INFO 30761 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : Signature    : String com.sunjh.xiyiji.logic.impl.TestLogicImpl.sayHello()
+2020-11-04 15:46:56.003  INFO 30761 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : Args         : []
+2020-11-04 15:46:56.006  INFO 30761 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : =========================================== End ===========================================
+2020-11-04 15:46:56.006  INFO 30761 --- [http-nio-8080-exec-1] com.sunjh.xiyiji.aspect.LogLogicAspect   : 
+2020-11-04 15:46:56.006  INFO 30761 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : =========================================== End ===========================================
+2020-11-04 15:46:56.006  INFO 30761 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : 
+2020-11-04 15:46:56.007  INFO 30761 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : Response Args  : null
+2020-11-04 15:46:56.007  INFO 30761 --- [http-nio-8080-exec-1] c.s.xiyiji.aspect.LogControllerAspect    : Time-Consuming : 36 ms
+2020-11-04 15:47:05.096  INFO 30761 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-04 15:47:05.097  INFO 30761 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-04 15:47:05.097  INFO 30761 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2020-11-04 15:47:05.100  INFO 30761 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
