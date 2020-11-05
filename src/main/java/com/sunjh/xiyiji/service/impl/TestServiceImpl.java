@@ -16,7 +16,7 @@ public class TestServiceImpl implements TestService {
     private TestDao testDao;
 
     @Override
-    public String sayHello() {
-        return "hello service! " + testDao.findOneById(1L).getName();
+    public String sayHello(Long userId) {
+        return "hello service! " + testDao.findOneById(userId).getName();
     }
 }

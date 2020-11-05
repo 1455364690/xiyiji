@@ -6,6 +6,7 @@ import com.sunjh.xiyiji.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -20,12 +21,12 @@ public class TestController extends BaseController {
     private TestLogic testLogic;
 
     @GetMapping("/test/get")
-    public BaseResult<String> testGet() {
+    public BaseResult<String> testGet(@RequestParam Long userId) {
         BaseResult<String> result = new BaseResult<>();
         result.setCode("200");
         result.setMessage("success");
         result.setSuccess(true);
-        result.setData(testLogic.sayHello());
+        result.setData(testLogic.sayHello(userId));
         return result;
     }
 

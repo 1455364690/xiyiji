@@ -16,7 +16,7 @@ public class TestLogicImpl implements TestLogic {
     private TestService testService;
 
     @Override
-    public String sayHello() {
-        return "hello logic!" + testService.sayHello();
+    public String sayHello(Long userId) {
+        return "hello logic!" + testService.sayHello(userId);
     }
 }
