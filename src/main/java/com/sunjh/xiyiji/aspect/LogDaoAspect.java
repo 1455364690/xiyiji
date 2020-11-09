@@ -41,9 +41,9 @@ public class LogDaoAspect {
         logger.info("========================================== Start ==========================================");
         // 打印请求 url
         logger.info("Signature    : {}", joinPoint.getSignature());
-        Object[] args = joinPoint.getArgs();
-        Arrays.stream(args);
-        Stream<Object> stream = ArrayUtils.isEmpty(args) ? Stream.empty() : Arrays.stream(args);
+        Object[] inputArgs = joinPoint.getArgs();
+        Arrays.stream(inputArgs);
+        Stream<Object> stream = ArrayUtils.isEmpty(inputArgs) ? Stream.empty() : Arrays.stream(inputArgs);
         ;
         List<Object> logArgs = stream.filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse))).collect(Collectors.toList());
         logger.info("Args         : {}", JSON.toJSONString(logArgs));
