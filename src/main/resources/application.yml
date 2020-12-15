@@ -1,0 +1,33 @@
+spring:
+  cache:
+    guava:
+      spec: expireAfterWrite=30s
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    # Keep the connection alive if idle for a long time (needed in production)
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  # Show or not log for each sql query
+  jpa:
+    show-sql: true
+  # Hibernate ddl auto (create, create-drop, update)
+  hibernate:
+    ddl-auto: validate
+    #hbm2ddl.auto: update
+    # Naming strategy
+    naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+  # The SQL dialect makes Hibernate generate better SQL for the chosen database
+  properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+spring.profiles.active: dev
+
+---
+spring:
+  profiles: dev
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://182.254.197.194:3306/xiyiji?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+    username: mooctest
+    password: secr3t!
+logging:
+  file:
+    name: /Users/sunjh/IdeaProjects/www/log/myLog.log

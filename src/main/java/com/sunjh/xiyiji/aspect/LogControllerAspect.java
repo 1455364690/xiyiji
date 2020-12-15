@@ -99,7 +99,7 @@ public class LogControllerAspect {
      * @return
      * @throws Throwable
      */
-    @Around("controllerLog() || logicLog() || serviceLog() || daoLog()")
+    //@Around("controllerLog() || logicLog() || serviceLog() || daoLog()")
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) {
         doBefore(proceedingJoinPoint);
         long startTime = System.currentTimeMillis();
