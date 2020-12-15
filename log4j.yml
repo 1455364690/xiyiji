@@ -1,0 +1,81 @@
+Configuration:
+  properties:
+    property:
+      - name: logPath
+        value: /Users/sunjh/IdeaProjects/www/log/
+      - name: filename
+        value: myLog.log
+      - name: pattern
+        value: "%d{yyyy-MM-dd HH:mm:ss} [%X{X-B3-TraceTestControllerId},%X{X-B3-SpanId},%X{X-B3-ParentSpanId},%X{X-Span-Export}]
+        [%p] [%t] [%c] %m%n"
+      - name: httpRequestPattern
+        value: "%-d{yyyy-MM-dd HH:mm:ss} %m%n"
+
+  status: "info"
+  Appenders:
+    Console:
+      name: console
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss} [%X{X-B3-TraceId},%X{X-B3-SpanId},%X{X-B3-ParentSpanId},%X{X-Span-Export}] [%p] [%t] [%c] %m%n"
+    RollingRandomAccessFile:
+      - name: "FileAppender"
+        fileName: "${logPath}root-${filename}"
+        filePattern: "${logPath}${filename}.%d{yyyy-MM-dd}"
+        PatternLayout:
+          pattern: "${pattern}"
+        Policies:
+          TimeBasedTriggeringPolicy: { }
+      - name: "AspectFileAppender"
+        fileName: "${logPath}aspect-${filename}"
+        filePattern: "${logPath}${filename}.%d{yyyy-MM-dd}"
+        PatternLayout:
+          pattern: "${pattern}"
+        Policies:
+          TimeBasedTriggeringPolicy: { }
+      - name: "AnalysisFileAppender"
+        fileName: "${logPath}analysis-${filename}"
+        filePattern: "${logPath}analysis-${filename}.%d{yyyy-MM-dd}"
+        PatternLayout:
+          pattern: "${pattern}"
+        Policies:
+          TimeBasedTriggeringPolicy: { }
+      - name: "HTTPRequestFileAppender"
+        fileName: "${logPath}http-request-${filename}"
+        filePattern: "${logPath}http-request-${filename}.%d{yyyy-MM-dd}"
+        PatternLayout:
+          pattern: "${httpRequestPattern}"
+        Policies:
+          TimeBasedTriggeringPolicy: { }
+      - name: "RPCRequestFileAppender"
+        fileName: "${logPath}rpc-request-${filename}"
+        filePattern: "${logPath}rpc-request-${filename}.%d{yyyy-MM-dd}"
+        PatternLayout:
+          pattern: "${pattern}"
+        Policies:
+          TimeBasedTriggeringPolicy: { }
+  Loggers:
+    AsyncLogger:
+      - name: RequestLogger
+        level: info
+        additivity: false
+        AppenderRef:
+          - ref: HTTPRequestFileAppender
+      - name: "RpcRequestLogger"
+        level: "info"
+        additivity: false
+        AppenderRef:
+          - ref: RPCRequestFileAppender
+      - name: AnalysisLogger
+        level: info
+        additivity: false
+        AppenderRef:
+          - ref: AnalysisFileAppender
+      - name: cn.iselab.mooctest.site.common.aspect.LogControllerAspect
+        level: info
+        AppenderRef:
+          - ref: AspectFileAppender
+    AsyncRoot:
+      level: info
+      AppenderRef:
+        - ref: console

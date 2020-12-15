@@ -1,0 +1,6 @@
+sudo chmod 777 /var/run/docker.sock
+docker run -d --name=metricbeat --volume="/home/sunjh/sunjh/metricbeat.docker.yml:/usr/share/metricbeat/metricbeat.yml:ro" --volume="/var/run/docker.sock:/var/run/docker.sock:ro" --volume="/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro" --volume="/proc:/hostfs/proc:ro" --volume="/:/hostfs:ro" docker.elastic.co/beats/metricbeat:7.9.3 metricbeat -e -E output.elasticsearch.hosts=["49.235.82.39:9200"]
+
+docker run -d --name=filebeat --volume="/home/sunjh/sunjh/mooctest/business/TestFileSystem/log/aspect-myLog.log:/var/aspect-myLog.log" --volume="/home/sunjh/sunjh/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro" --volume="/var/lib/docker/containers:/var/lib/docker/containers:ro" --volume="/var/run/docker.sock:/var/run/docker.sock:ro" docker.elastic.co/beats/filebeat:7.9.3 filebeat -e -strict.perms=false -E output.elasticsearch.hosts=["49.235.82.39:9200"]
+
+docker run -d --name=packetbeat --volume="/home/sunjh/sunjh/packetbeat.docker.yml:/usr/share/packetbeat/packetbeat.yml:ro" --cap-add="NET_RAW" --cap-add="NET_ADMIN" --network=host docker.elastic.co/beats/packetbeat:7.9.3 --strict.perms=false -e -E output.elasticsearch.hosts=["49.235.82.39:9200"]
