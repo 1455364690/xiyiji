@@ -25,9 +25,13 @@ spring:
   profiles: dev
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://182.254.197.194:3306/xiyiji?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
-    username: mooctest
-    password: secr3t!
+    url: jdbc:mysql://182.254.197.194:3306/hot_search?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 123456
 logging:
   file:
     name: /Users/sunjh/IdeaProjects/www/log/myLog.log
+skywalking:
+  datasource: http://192.168.31.221:8003
+diagnosis:
+  url: http:49.235.82.39:8000
