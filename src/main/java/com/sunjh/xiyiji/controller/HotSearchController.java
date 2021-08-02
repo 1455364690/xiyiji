@@ -15,6 +15,9 @@ public class HotSearchController {
     @Autowired
     private HotSearchLogic hotSearchLogic;
 
+    /**
+     * @return test
+     */
     @GetMapping("hello")
     public String hello() {
         return hotSearchLogic.test();
