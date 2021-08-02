@@ -35,3 +35,10 @@ skywalking:
   datasource: http://192.168.31.221:8003
 diagnosis:
   url: http:49.235.82.39:8000
+http_pool:
+  max_total: 200
+  default_max_per_route: 100
+  connect_timeout: 5000
+  connection_request_timeout: 1000
+  socket_timeout: 65000
+  validate_after_inactivity: 2000
