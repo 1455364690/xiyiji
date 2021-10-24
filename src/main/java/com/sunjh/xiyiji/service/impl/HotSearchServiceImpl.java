@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class HotSearchServiceImpl implements HotSearchService {
+
+
     @Override
     public String test() {
         return "hello world";

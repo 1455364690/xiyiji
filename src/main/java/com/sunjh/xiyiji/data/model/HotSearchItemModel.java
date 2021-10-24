@@ -12,6 +12,10 @@ import java.util.List;
 @Data
 public class HotSearchItemModel {
     /**
+     * id
+     */
+    private Long hotSearchId;
+    /**
      * 热搜原始句子
      */
     private String originContent;

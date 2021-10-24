@@ -21,7 +21,7 @@ public class HotSearchLogicImpl implements HotSearchLogic {
 
     @Override
     public String test() {
-        return httpService.get("https://jsnjsw.cnki.net/api/DataCenter/GetMapData?zCode=110&getflag=ALL");
+        return httpService.get("https://s.weibo.com/top/summary/summary?cate=realtimehot").substring(1,8);
         //return hotSearchService.test();
     }
 }

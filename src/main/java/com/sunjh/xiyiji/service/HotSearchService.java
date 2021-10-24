@@ -7,4 +7,6 @@ package com.sunjh.xiyiji.service;
  */
 public interface HotSearchService {
     String test();
+
+
 }
