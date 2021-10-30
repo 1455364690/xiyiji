@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.List;
 
 /**
@@ -54,6 +56,27 @@ public class XuyujieLogicImpl implements XuyujieLogic {
 
     @Override
     public List<BaseVoiceEntity> analyseFile(String fileName) {
+        System.out.println("analyse:" + fileName);
+        try {
+            File file = new File(templatePath, fileName);
+            if (!file.exists()) {
+                System.out.println("null");
+                return null;
+            }
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            //第一行
+            String line = bufferedReader.readLine();
+            System.out.println("第一行");
+            System.out.println(line);
+            //之后的行
+            System.out.println("其他行");
+            while (null != (line = bufferedReader.readLine())) {
+                System.out.println(line);
+            }
+
+        } catch (Exception e) {
+
+        }
         System.out.println(fileName);
         return null;
     }
