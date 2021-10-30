@@ -19,4 +19,25 @@ public class BasePageResult<T> {
     private int pageSize;
     private int pageNum;
     private int number;
+
+    public BasePageResult<T> success(List<T> data,int pageNum,int pageSize, int total) {
+        BasePageResult<T> result = new BasePageResult<>();
+        result.setCode(null);
+        result.setMessage(null);
+        result.setSuccess(true);
+        result.setPageNum(pageNum);
+        result.setPageSize(pageSize);
+        result.setTotal(total);
+        result.setData(data);
+        return result;
+    }
+
+    public BasePageResult<T> fail(String message, String errorCode) {
+        BasePageResult<T> result = new BasePageResult<>();
+        result.setCode(errorCode);
+        result.setMessage(message);
+        result.setSuccess(false);
+        result.setData(null);
+        return result;
+    }
 }

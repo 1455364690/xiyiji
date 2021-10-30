@@ -1,6 +1,7 @@
 package com.sunjh.xiyiji.logic.xuyujie;
 
 import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
+import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
 import com.sunjh.xiyiji.data.xuyujie.enums.XuyujieFileTypeEnum;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
@@ -9,9 +10,12 @@ import com.sunjh.xiyiji.service.xuyujie.XuyujieService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.print.Printable;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -112,5 +116,19 @@ public class XuyujieLogicImpl implements XuyujieLogic {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<XuyujieUploadVO> getDataListByCondition(XuyujieQueryCondition condition) {
+        if (condition.getDataFileType().equals(XuyujieFileTypeEnum.DURATION.getValue())){
+            List<Duration> durationList = xuyujieService.getDurationDataListByCondition(condition);
+            return durationList.stream().map(XuyujieUploadVOConvertor::convertDuration2XuyujieUploadVO).collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    @Override
+    public int countByUserName(String userName) {
+        return xuyujieService.countByUserName(userName);
     }
 }

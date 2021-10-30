@@ -1,5 +1,6 @@
 package com.sunjh.xiyiji.data.xuyujie.convertor;
 
+import com.sunjh.xiyiji.dao.xuyujiedao.DurationDAO;
 import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
@@ -46,5 +47,23 @@ public class XuyujieUploadVOConvertor {
         duration.setDataFive(xuyujieUploadVO.getDataFive());
         duration.setDataSix(xuyujieUploadVO.getDataSix());
         return duration;
+    }
+
+    public static XuyujieUploadVO convertDuration2XuyujieUploadVO(Duration duration){
+        if (null == duration){
+            return null;
+        }
+        XuyujieUploadVO xuyujieUploadVO = new XuyujieUploadVO();
+        xuyujieUploadVO.setFileName("");
+        xuyujieUploadVO.setName(duration.getName());
+        xuyujieUploadVO.setType(duration.getType());
+        xuyujieUploadVO.setDataOne(duration.getDataOne());
+        xuyujieUploadVO.setDataTwo(duration.getDataTwo());
+        xuyujieUploadVO.setDataThree(duration.getDataThree());
+        xuyujieUploadVO.setDataFour(duration.getDataFour());
+        xuyujieUploadVO.setDataFive(duration.getDataFive());
+        xuyujieUploadVO.setDataSix(duration.getDataSix());
+        xuyujieUploadVO.setUserName(duration.getUserName());
+        return xuyujieUploadVO;
     }
 }

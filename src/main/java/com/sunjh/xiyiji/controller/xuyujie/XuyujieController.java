@@ -1,7 +1,9 @@
 package com.sunjh.xiyiji.controller.xuyujie;
 
+import com.sunjh.xiyiji.data.result.BasePageResult;
 import com.sunjh.xiyiji.data.result.BaseResult;
 import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
+import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import com.sunjh.xiyiji.logic.xuyujie.XuyujieLogic;
@@ -50,6 +52,13 @@ public class XuyujieController {
             return new BaseResult<Boolean>().fail("error", "error");
         }
 
+    }
+
+    @PostMapping("api/xuyujie/query_data_by_condition")
+    public BasePageResult<XuyujieUploadVO> getDataListByCondition(@RequestBody XuyujieQueryCondition condition) {
+        List<XuyujieUploadVO> xuyujieQueryList = xuyujieLogic.getDataListByCondition(condition);
+        int total = xuyujieLogic.countByUserName(condition.getUserName());
+        return new BasePageResult<XuyujieUploadVO>().success(xuyujieQueryList, condition.getPageNum(), condition.getPageSize(), total);
     }
 
 }

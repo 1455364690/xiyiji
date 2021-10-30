@@ -1,8 +1,13 @@
 package com.sunjh.xiyiji.service.xuyujie;
 
 import com.sunjh.xiyiji.dao.xuyujiedao.DurationDAO;
+import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
+import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.expression.Operation;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +46,18 @@ public class XuyujieServiceImpl implements XuyujieService {
         duration.setGmtCreate(new Timestamp(System.currentTimeMillis()));
         duration.setGmtModified(new Timestamp(System.currentTimeMillis()));
         return durationDAO.save(duration);
+    }
+
+    @Override
+    public List<Duration> getDurationDataListByCondition(XuyujieQueryCondition condition) {
+        Pageable pageable = PageRequest.of(condition.getPageNum(), condition.getPageSize());
+        Page<Duration> durations = durationDAO.findByUserNamePageable(condition.getUserName(), pageable);
+        return durations.getContent();
+    }
+
+    @Override
+    public int countByUserName(String userName) {
+        long count = durationDAO.countByUserName(userName);
+        return (int) count;
     }
 }

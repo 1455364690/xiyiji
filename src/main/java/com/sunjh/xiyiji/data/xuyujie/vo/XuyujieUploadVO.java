@@ -11,6 +11,7 @@ import lombok.Data;
 public class XuyujieUploadVO {
     private String id;
     private String fileName;
+    private String userName;
     private String name;
     private String type;
     private String dataOne;

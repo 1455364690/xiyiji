@@ -1,7 +1,9 @@
 package com.sunjh.xiyiji.logic.xuyujie;
 
 import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
+import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -17,4 +19,8 @@ public interface XuyujieLogic {
     List<BaseVoiceEntity> analyseFile(String fileName);
 
     boolean saveFileContent(List<XuyujieUploadVO> xuyujieUploadVOList);
+
+    List<XuyujieUploadVO> getDataListByCondition(XuyujieQueryCondition condition);
+
+    int countByUserName(String userName);
 }
