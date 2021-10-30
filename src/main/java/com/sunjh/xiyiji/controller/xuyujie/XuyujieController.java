@@ -38,8 +38,7 @@ public class XuyujieController {
     @GetMapping("api/xuyujie/get_analyse_table_from_txt_file/{fileName}")
     public BaseResult<List<XuyujieUploadVO>> analyse(@PathVariable String fileName) {
         List<BaseVoiceEntity> baseVoiceEntityList = xuyujieLogic.analyseFile(fileName);
-        List<XuyujieUploadVO> xuyujieUploadVOList = null;
-        //List<XuyujieUploadVO> xuyujieUploadVOList = baseVoiceEntityList.stream().map(XuyujieUploadVOConvertor::convertEntity2VO).collect(Collectors.toList());
+        List<XuyujieUploadVO> xuyujieUploadVOList = baseVoiceEntityList.stream().map(XuyujieUploadVOConvertor::convertEntity2VO).collect(Collectors.toList());
         System.out.println(new BaseResult<List<XuyujieUploadVO>>().success(xuyujieUploadVOList));
         return new BaseResult<List<XuyujieUploadVO>>().success(xuyujieUploadVOList);
     }

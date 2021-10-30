@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -64,20 +66,24 @@ public class XuyujieLogicImpl implements XuyujieLogic {
                 return null;
             }
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            //第一行
+            List<BaseVoiceEntity> result = new LinkedList<>();
+            //第一行数据弃置
             String line = bufferedReader.readLine();
-            System.out.println("第一行");
-            System.out.println(line);
             //之后的行
-            System.out.println("其他行");
             while (null != (line = bufferedReader.readLine())) {
-                System.out.println(line);
+                String[] otherLine = line.split("\t");
+                BaseVoiceEntity baseVoiceEntity = new BaseVoiceEntity();
+                baseVoiceEntity.setName(otherLine[0]);
+                baseVoiceEntity.setFileName(fileName);
+                baseVoiceEntity.setType(otherLine[0]);
+                List<String> dataList = new LinkedList<>(Arrays.asList(otherLine).subList(1, otherLine.length));
+                baseVoiceEntity.setData(dataList);
+                result.add(baseVoiceEntity);
             }
-
+            bufferedReader.close();
+            return result;
         } catch (Exception e) {
-
+            return null;
         }
-        System.out.println(fileName);
-        return null;
     }
 }

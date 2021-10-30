@@ -3,6 +3,8 @@ package com.sunjh.xiyiji.data.xuyujie.convertor;
 import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 
+import java.util.List;
+
 /**
  * @author sunjh
  * @version 1.0
@@ -18,12 +20,13 @@ public class XuyujieUploadVOConvertor {
         xuyujieUploadVO.setFileName(durationEntity.getFileName());
         xuyujieUploadVO.setName(durationEntity.getName());
         xuyujieUploadVO.setType(durationEntity.getType());
-        xuyujieUploadVO.setDataOne(durationEntity.getData().get(0));
-        xuyujieUploadVO.setDataTwo(durationEntity.getData().get(0));
-        xuyujieUploadVO.setDataThree(durationEntity.getData().get(0));
-        xuyujieUploadVO.setDataFour(durationEntity.getData().get(0));
-        xuyujieUploadVO.setDataFive(durationEntity.getData().get(0));
-        xuyujieUploadVO.setDataSix(durationEntity.getData().get(0));
+        List<String> data = durationEntity.getData();
+        xuyujieUploadVO.setDataOne(data.size() > 0 ? data.get(0) : null);
+        xuyujieUploadVO.setDataTwo(data.size() > 1 ? data.get(1) : null);
+        xuyujieUploadVO.setDataThree(data.size() > 2 ? data.get(2) : null);
+        xuyujieUploadVO.setDataFour(data.size() > 3 ? data.get(3) : null);
+        xuyujieUploadVO.setDataFive(data.size() > 4 ? data.get(4) : null);
+        xuyujieUploadVO.setDataSix(data.size() > 5 ? data.get(5) : null);
         return xuyujieUploadVO;
     }
 }
