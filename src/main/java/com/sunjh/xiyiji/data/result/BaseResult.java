@@ -13,4 +13,17 @@ public class BaseResult<T> {
     private String code;
     private boolean success;
     private T data;
+
+    public static void main(String[] args) {
+
+    }
+
+    public BaseResult<T> success(T data) {
+        BaseResult<T> result = new BaseResult<>();
+        result.setCode(null);
+        result.setMessage(null);
+        result.setSuccess(true);
+        result.setData(data);
+        return result;
+    }
 }

@@ -31,6 +31,8 @@ spring:
 logging:
   file:
     name: /Users/sunjh/IdeaProjects/www/log/myLog.log
+xuyujie:
+  filePath: /Users/sunjh/IdeaProjects/xiyiji/file
 skywalking:
   datasource: http://192.168.31.221:8003
 diagnosis:
