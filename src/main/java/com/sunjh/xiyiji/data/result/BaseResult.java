@@ -26,4 +26,13 @@ public class BaseResult<T> {
         result.setData(data);
         return result;
     }
+
+    public BaseResult<T> fail(String message, String errorCode) {
+        BaseResult<T> result = new BaseResult<>();
+        result.setCode(errorCode);
+        result.setMessage(message);
+        result.setSuccess(false);
+        result.setData(null);
+        return result;
+    }
 }

@@ -1,6 +1,7 @@
 package com.sunjh.xiyiji.logic.xuyujie;
 
 import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
+import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface XuyujieLogic {
     String saveFile(MultipartFile file);
 
     List<BaseVoiceEntity> analyseFile(String fileName);
+
+    boolean saveFileContent(List<XuyujieUploadVO> xuyujieUploadVOList);
 }

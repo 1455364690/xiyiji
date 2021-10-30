@@ -19,4 +19,9 @@ public interface DurationDAO extends CrudRepository<Duration, Long> {
     Optional<Duration> findById(Long id);
 
     List<Duration> findByUserName(String userName);
+
+    List<Duration> findByNameAndTypeAndUserName(String name, String type, String username);
+
+    @Override
+    <S extends Duration> Iterable<S> saveAll(Iterable<S> iterable);
 }

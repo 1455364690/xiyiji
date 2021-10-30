@@ -1,7 +1,13 @@
 package com.sunjh.xiyiji.logic.xuyujie;
 
 import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
+import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
+import com.sunjh.xiyiji.data.xuyujie.enums.XuyujieFileTypeEnum;
+import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
+import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
+import com.sunjh.xiyiji.service.xuyujie.XuyujieService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +18,7 @@ import java.io.FileReader;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author sunjh
@@ -25,6 +32,9 @@ public class XuyujieLogicImpl implements XuyujieLogic {
     private String templatePath;
 
     private String fileSpliter = ".";
+
+    @Autowired
+    private XuyujieService xuyujieService;
 
     @Override
     public String saveFile(MultipartFile file) {
@@ -58,7 +68,6 @@ public class XuyujieLogicImpl implements XuyujieLogic {
 
     @Override
     public List<BaseVoiceEntity> analyseFile(String fileName) {
-        System.out.println("analyse:" + fileName);
         try {
             File file = new File(templatePath, fileName);
             if (!file.exists()) {
@@ -85,5 +94,23 @@ public class XuyujieLogicImpl implements XuyujieLogic {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public boolean saveFileContent(List<XuyujieUploadVO> xuyujieUploadVOList) {
+        if (xuyujieUploadVOList.get(0).getFileName().contains(XuyujieFileTypeEnum.DURATION.getValue())) {
+            List<Duration> durationList = xuyujieUploadVOList.stream().map(XuyujieUploadVOConvertor::convertVO2Duration).collect(Collectors.toList());
+            if (durationList.size() == 0) {
+                return false;
+            }
+            for (Duration duration : durationList) {
+                List<Duration> list = xuyujieService.findByNameAndTypeAndUserName(duration.getName(), duration.getType(), duration.getUserName());
+                if (null == list || list.size() == 0) {
+                    xuyujieService.saveDuration(duration);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

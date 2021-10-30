@@ -2,6 +2,7 @@ package com.sunjh.xiyiji.data.xuyujie.convertor;
 
 import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
+import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
 
 import java.util.List;
 
@@ -28,5 +29,22 @@ public class XuyujieUploadVOConvertor {
         xuyujieUploadVO.setDataFive(data.size() > 4 ? data.get(4) : null);
         xuyujieUploadVO.setDataSix(data.size() > 5 ? data.get(5) : null);
         return xuyujieUploadVO;
+    }
+
+    public static Duration convertVO2Duration(XuyujieUploadVO xuyujieUploadVO) {
+        if (null == xuyujieUploadVO) {
+            return null;
+        }
+        Duration duration = new Duration();
+        duration.setName(xuyujieUploadVO.getName());
+        duration.setType(xuyujieUploadVO.getType());
+        duration.setUserName("test");
+        duration.setDataOne(xuyujieUploadVO.getDataOne());
+        duration.setDataTwo(xuyujieUploadVO.getDataTwo());
+        duration.setDataThree(xuyujieUploadVO.getDataThree());
+        duration.setDataFour(xuyujieUploadVO.getDataFour());
+        duration.setDataFive(xuyujieUploadVO.getDataFive());
+        duration.setDataSix(xuyujieUploadVO.getDataSix());
+        return duration;
     }
 }

@@ -30,7 +30,6 @@ public class XuyujieController {
 
     @PostMapping("api/xuyujie/upload_txt_file")
     public BaseResult<String> upload(@RequestParam("filename") MultipartFile file) {
-        System.out.println(file.getOriginalFilename());
         String newFileName = xuyujieLogic.saveFile(file);
         return new BaseResult<String>().success(newFileName);
     }
@@ -39,9 +38,18 @@ public class XuyujieController {
     public BaseResult<List<XuyujieUploadVO>> analyse(@PathVariable String fileName) {
         List<BaseVoiceEntity> baseVoiceEntityList = xuyujieLogic.analyseFile(fileName);
         List<XuyujieUploadVO> xuyujieUploadVOList = baseVoiceEntityList.stream().map(XuyujieUploadVOConvertor::convertEntity2VO).collect(Collectors.toList());
-        System.out.println(new BaseResult<List<XuyujieUploadVO>>().success(xuyujieUploadVOList));
         return new BaseResult<List<XuyujieUploadVO>>().success(xuyujieUploadVOList);
     }
 
+    @PostMapping("api/xuyujie/save_analyse_table_from_txt_file")
+    public BaseResult<Boolean> save(@RequestBody List<XuyujieUploadVO> xuyuUploadVOList) {
+        System.out.println(xuyuUploadVOList.size());
+        if (xuyujieLogic.saveFileContent(xuyuUploadVOList)) {
+            return new BaseResult<Boolean>().success(Boolean.TRUE);
+        } else {
+            return new BaseResult<Boolean>().fail("error", "error");
+        }
+
+    }
 
 }
