@@ -57,7 +57,7 @@ public class XuyujieController {
     @PostMapping("api/xuyujie/query_data_by_condition")
     public BasePageResult<XuyujieUploadVO> getDataListByCondition(@RequestBody XuyujieQueryCondition condition) {
         List<XuyujieUploadVO> xuyujieQueryList = xuyujieLogic.getDataListByCondition(condition);
-        int total = xuyujieLogic.countByUserName(condition.getUserName());
+        int total = xuyujieLogic.countByUserName(condition);
         return new BasePageResult<XuyujieUploadVO>().success(xuyujieQueryList, condition.getPageNum(), condition.getPageSize(), total);
     }
 

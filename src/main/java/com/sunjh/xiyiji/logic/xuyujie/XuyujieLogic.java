@@ -22,5 +22,5 @@ public interface XuyujieLogic {
 
     List<XuyujieUploadVO> getDataListByCondition(XuyujieQueryCondition condition);
 
-    int countByUserName(String userName);
+    int countByUserName(XuyujieQueryCondition condition);
 }

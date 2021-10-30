@@ -6,16 +6,15 @@ import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
 import com.sunjh.xiyiji.data.xuyujie.enums.XuyujieFileTypeEnum;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
+import com.sunjh.xiyiji.data.xuyujiemodel.ExcursionSize;
+import com.sunjh.xiyiji.data.xuyujiemodel.F0Acceleration;
+import com.sunjh.xiyiji.data.xuyujiemodel.MeanF0;
 import com.sunjh.xiyiji.service.xuyujie.XuyujieService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.Printable;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -108,9 +107,51 @@ public class XuyujieLogicImpl implements XuyujieLogic {
                 return false;
             }
             for (Duration duration : durationList) {
-                List<Duration> list = xuyujieService.findByNameAndTypeAndUserName(duration.getName(), duration.getType(), duration.getUserName());
+                List<Duration> list = xuyujieService.findDurationByNameAndTypeAndUserName(duration.getName(), duration.getType(), duration.getUserName());
                 if (null == list || list.size() == 0) {
                     xuyujieService.saveDuration(duration);
+                }
+            }
+            return true;
+        }
+
+        if (xuyujieUploadVOList.get(0).getFileName().contains(XuyujieFileTypeEnum.MEAN_F0.getValue())) {
+            List<MeanF0> meanF0List = xuyujieUploadVOList.stream().map(XuyujieUploadVOConvertor::convertVO2MeanF0).collect(Collectors.toList());
+            if (meanF0List.size() == 0) {
+                return false;
+            }
+            for (MeanF0 meanF0 : meanF0List) {
+                List<MeanF0> list = xuyujieService.findMeanF0ByNameAndTypeAndUserName(meanF0.getName(), meanF0.getType(), meanF0.getUserName());
+                if (null == list || list.size() == 0) {
+                    xuyujieService.saveMeanF0(meanF0);
+                }
+            }
+            return true;
+        }
+
+        if (xuyujieUploadVOList.get(0).getFileName().contains(XuyujieFileTypeEnum.F0_ACCELERATION.getValue())) {
+            List<F0Acceleration> f0AccelerationList = xuyujieUploadVOList.stream().map(XuyujieUploadVOConvertor::convertVO2F0Acceleration).collect(Collectors.toList());
+            if (f0AccelerationList.size() == 0) {
+                return false;
+            }
+            for (F0Acceleration f0Acceleration : f0AccelerationList) {
+                List<F0Acceleration> list = xuyujieService.findF0AccelerationByNameAndTypeAndUserName(f0Acceleration.getName(), f0Acceleration.getType(), f0Acceleration.getUserName());
+                if (null == list || list.size() == 0) {
+                    xuyujieService.saveF0Acceleration(f0Acceleration);
+                }
+            }
+            return true;
+        }
+
+        if (xuyujieUploadVOList.get(0).getFileName().contains(XuyujieFileTypeEnum.EXCURSION_SIZE.getValue())) {
+            List<ExcursionSize> excursionSizeList = xuyujieUploadVOList.stream().map(XuyujieUploadVOConvertor::convertVO2ExcursionSize).collect(Collectors.toList());
+            if (excursionSizeList.size() == 0) {
+                return false;
+            }
+            for (ExcursionSize excursionSize : excursionSizeList) {
+                List<ExcursionSize> list = xuyujieService.findExcursionSizeByNameAndTypeAndUserName(excursionSize.getName(), excursionSize.getType(), excursionSize.getUserName());
+                if (null == list || list.size() == 0) {
+                    xuyujieService.saveExcursionSize(excursionSize);
                 }
             }
             return true;
@@ -120,15 +161,26 @@ public class XuyujieLogicImpl implements XuyujieLogic {
 
     @Override
     public List<XuyujieUploadVO> getDataListByCondition(XuyujieQueryCondition condition) {
-        if (condition.getDataFileType().equals(XuyujieFileTypeEnum.DURATION.getValue())){
-            List<Duration> durationList = xuyujieService.getDurationDataListByCondition(condition);
-            return durationList.stream().map(XuyujieUploadVOConvertor::convertDuration2XuyujieUploadVO).collect(Collectors.toList());
+        switch (condition.getDataFileType()) {
+            case "duration":
+                return xuyujieService.getDurationDataListByCondition(condition).stream().
+                        map(XuyujieUploadVOConvertor::convertDuration2XuyujieUploadVO).collect(Collectors.toList());
+            case "meanf0":
+                return xuyujieService.getMeanF0DataListByCondition(condition).stream().
+                        map(XuyujieUploadVOConvertor::convertMeanF02XuyujieUploadVO).collect(Collectors.toList());
+            case "f0acceleration":
+                return xuyujieService.getF0AccelerationDataListByCondition(condition).stream().
+                        map(XuyujieUploadVOConvertor::convertF0Acceleration2XuyujieUploadVO).collect(Collectors.toList());
+            case "excursionsize":
+                return xuyujieService.getExcursionSizeDataListByCondition(condition).stream().
+                        map(XuyujieUploadVOConvertor::convertExcursionSize2XuyujieUploadVO).collect(Collectors.toList());
+            default:
+                return null;
         }
-        return null;
     }
 
     @Override
-    public int countByUserName(String userName) {
-        return xuyujieService.countByUserName(userName);
+    public int countByUserName(XuyujieQueryCondition condition) {
+        return xuyujieService.countByCondition(condition);
     }
 }

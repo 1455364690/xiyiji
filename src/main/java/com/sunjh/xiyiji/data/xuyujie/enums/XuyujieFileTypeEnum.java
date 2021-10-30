@@ -9,12 +9,12 @@ public enum XuyujieFileTypeEnum {
 
     DURATION("DURATION", "duration", "duration"),
     MEAN_F0("MEAN_F0", "meanf0", "mean_f0"),
-    F0_ACCELERATION("F0_ACCELERATION", "f0acceration", "f0acceration"),
+    F0_ACCELERATION("F0_ACCELERATION", "f0acceleration", "f0acceration"),
     EXCURSION_SIZE("EXCURSION_SIZE", "excursionsize", "excursionsize");
 
-    private String code;
-    private String value;
-    private String description;
+    public final String code;
+    public final String value;
+    public final String description;
 
     private XuyujieFileTypeEnum(String code, String value, String description) {
         this.code = code;
