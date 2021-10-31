@@ -34,5 +34,10 @@ public interface MeanF0DAO extends CrudRepository<MeanF0, Long> {
     @Query(value = "select d from MeanF0 d where d.userName=:userName")
     Page<MeanF0> findByUserNamePageable(@Param("userName") String userName, Pageable pageable);
 
+    @Query(value = "select d from MeanF0 d where 1=1")
+    Page<MeanF0> findPageable(Pageable pageable);
+
     long countByUserName(String userName);
+
+    long countAllByUserNameNotNull();
 }

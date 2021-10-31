@@ -33,5 +33,10 @@ public interface DurationDAO extends CrudRepository<Duration, Long> {
     @Query(value = "select d from Duration d where d.userName=:userName")
     Page<Duration> findByUserNamePageable(@Param("userName") String userName, Pageable pageable);
 
+    @Query(value = "select d from Duration d where 1=1")
+    Page<Duration> findPageable(Pageable pageable);
+
     long countByUserName(String userName);
+
+    long countAllByUserNameNotNull();
 }

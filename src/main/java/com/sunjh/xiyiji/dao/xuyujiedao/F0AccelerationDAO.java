@@ -33,5 +33,10 @@ public interface F0AccelerationDAO  extends CrudRepository<F0Acceleration, Long>
     @Query(value = "select d from F0Acceleration d where d.userName=:userName")
     Page<F0Acceleration> findByUserNamePageable(@Param("userName") String userName, Pageable pageable);
 
+    @Query(value = "select d from F0Acceleration d where 1=1")
+    Page<F0Acceleration> findPageable(Pageable pageable);
+
     long countByUserName(String userName);
+
+    long countAllByUserNameNotNull();
 }

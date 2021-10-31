@@ -59,7 +59,7 @@ public class XuyujieUploadVOConvertor {
         MeanF0 meanF0 = new MeanF0();
         meanF0.setName(xuyujieUploadVO.getName());
         meanF0.setType(xuyujieUploadVO.getType());
-        meanF0.setUserName("test");
+        meanF0.setUserName(xuyujieUploadVO.getUserName());
         meanF0.setDataOne(xuyujieUploadVO.getDataOne());
         meanF0.setDataTwo(xuyujieUploadVO.getDataTwo());
         meanF0.setDataThree(xuyujieUploadVO.getDataThree());
