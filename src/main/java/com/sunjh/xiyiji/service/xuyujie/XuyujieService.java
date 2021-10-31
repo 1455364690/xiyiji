@@ -43,4 +43,6 @@ public interface XuyujieService {
     List<ExcursionSize> getExcursionSizeDataListByCondition(XuyujieQueryCondition condition);
 
     int countByCondition(XuyujieQueryCondition condition);
+
+    String createExcel(String filePath, String fileName,String type, List<String> tabList, List<XuyujieUploadVO> dataList);
 }

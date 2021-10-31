@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,9 @@ public class XuyujieLogicImpl implements XuyujieLogic {
 
     @Value("${xuyujie.filePath}")
     private String templatePath;
+
+    @Value("${xuyujie.downloadPath}")
+    private String downloadPath;
 
     private String fileSpliter = ".";
 
@@ -182,5 +186,14 @@ public class XuyujieLogicImpl implements XuyujieLogic {
     @Override
     public int countByUserName(XuyujieQueryCondition condition) {
         return xuyujieService.countByCondition(condition);
+    }
+
+    @Override
+    public String downloadAllByCondition(XuyujieQueryCondition condition) {
+        List<XuyujieUploadVO> voList = this.getDataListByCondition(condition);
+        String fileName = condition.getDataFileType() + "-" + System.currentTimeMillis();
+        List<String > tabList = Arrays.asList("数据id", "数据类型", "数据名称", "姓名", "数据1", "数据2", "数据3", "数据4", "数据5", "数据6");
+        String url = xuyujieService.createExcel(downloadPath, fileName, condition.getDataFileType(), tabList, voList);
+        return url;
     }
 }

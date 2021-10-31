@@ -23,4 +23,6 @@ public interface XuyujieLogic {
     List<XuyujieUploadVO> getDataListByCondition(XuyujieQueryCondition condition);
 
     int countByUserName(XuyujieQueryCondition condition);
+
+    String downloadAllByCondition(XuyujieQueryCondition condition);
 }

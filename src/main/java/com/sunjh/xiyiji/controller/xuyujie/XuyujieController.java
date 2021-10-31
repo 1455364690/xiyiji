@@ -61,4 +61,10 @@ public class XuyujieController {
         return new BasePageResult<XuyujieUploadVO>().success(xuyujieQueryList, condition.getPageNum(), condition.getPageSize(), total);
     }
 
+    @PostMapping("api/xuyuejie/download_all_data_by_condition")
+    public BaseResult<String> downloadAllByCondition(@RequestBody XuyujieQueryCondition condition) {
+        String downloadUrl = xuyujieLogic.downloadAllByCondition(condition);
+        return new BaseResult<String>().success(downloadUrl);
+    }
+
 }

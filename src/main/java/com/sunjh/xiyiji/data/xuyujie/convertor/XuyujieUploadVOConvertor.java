@@ -103,11 +103,12 @@ public class XuyujieUploadVOConvertor {
         return excursionSize;
     }
 
-    public static XuyujieUploadVO convertDuration2XuyujieUploadVO(Duration duration){
-        if (null == duration){
+    public static XuyujieUploadVO convertDuration2XuyujieUploadVO(Duration duration) {
+        if (null == duration) {
             return null;
         }
         XuyujieUploadVO xuyujieUploadVO = new XuyujieUploadVO();
+        xuyujieUploadVO.setId("" + duration.getId());
         xuyujieUploadVO.setFileName("");
         xuyujieUploadVO.setName(duration.getName());
         xuyujieUploadVO.setType(duration.getType());
@@ -121,11 +122,12 @@ public class XuyujieUploadVOConvertor {
         return xuyujieUploadVO;
     }
 
-    public static XuyujieUploadVO convertMeanF02XuyujieUploadVO(MeanF0 duration){
-        if (null == duration){
+    public static XuyujieUploadVO convertMeanF02XuyujieUploadVO(MeanF0 duration) {
+        if (null == duration) {
             return null;
         }
         XuyujieUploadVO xuyujieUploadVO = new XuyujieUploadVO();
+        xuyujieUploadVO.setId("" + duration.getId());
         xuyujieUploadVO.setFileName("");
         xuyujieUploadVO.setName(duration.getName());
         xuyujieUploadVO.setType(duration.getType());
@@ -139,11 +141,12 @@ public class XuyujieUploadVOConvertor {
         return xuyujieUploadVO;
     }
 
-    public static XuyujieUploadVO convertExcursionSize2XuyujieUploadVO(ExcursionSize duration){
-        if (null == duration){
+    public static XuyujieUploadVO convertExcursionSize2XuyujieUploadVO(ExcursionSize duration) {
+        if (null == duration) {
             return null;
         }
         XuyujieUploadVO xuyujieUploadVO = new XuyujieUploadVO();
+        xuyujieUploadVO.setId("" + duration.getId());
         xuyujieUploadVO.setFileName("");
         xuyujieUploadVO.setName(duration.getName());
         xuyujieUploadVO.setType(duration.getType());
@@ -157,11 +160,12 @@ public class XuyujieUploadVOConvertor {
         return xuyujieUploadVO;
     }
 
-    public static XuyujieUploadVO convertF0Acceleration2XuyujieUploadVO(F0Acceleration duration){
-        if (null == duration){
+    public static XuyujieUploadVO convertF0Acceleration2XuyujieUploadVO(F0Acceleration duration) {
+        if (null == duration) {
             return null;
         }
         XuyujieUploadVO xuyujieUploadVO = new XuyujieUploadVO();
+        xuyujieUploadVO.setId("" + duration.getId());
         xuyujieUploadVO.setFileName("");
         xuyujieUploadVO.setName(duration.getName());
         xuyujieUploadVO.setType(duration.getType());

@@ -11,6 +11,9 @@ import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
 import com.sunjh.xiyiji.data.xuyujiemodel.ExcursionSize;
 import com.sunjh.xiyiji.data.xuyujiemodel.F0Acceleration;
 import com.sunjh.xiyiji.data.xuyujiemodel.MeanF0;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +22,10 @@ import org.springframework.expression.Operation;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.OptionalDouble;
@@ -168,5 +175,73 @@ public class XuyujieServiceImpl implements XuyujieService {
                     return 0;
             }
         }
+    }
+
+    @Override
+    public String createExcel(String filePath, String fileName, String type, List<String> tabList, List<XuyujieUploadVO> dataList) {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet(type + "表");
+        //设置表格列宽度为10个字节
+        sheet.setDefaultColumnWidth(30);
+        //创建标题的显示样式
+        HSSFCellStyle headerStyle = workbook.createCellStyle();
+        headerStyle.setFillForegroundColor(IndexedColors.YELLOW.index);
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        //创建第一行表头
+        HSSFRow headrow = sheet.createRow(0);
+        for (int i = 0; i < tabList.size(); i++) {
+            //创建一个单元格
+            HSSFCell cell = headrow.createCell(i);
+
+            //创建一个内容对象
+            HSSFRichTextString text = new HSSFRichTextString(tabList.get(i));
+
+            //将内容对象的文字内容写入到单元格中
+            cell.setCellValue(text);
+            cell.setCellStyle(headerStyle);
+        }
+
+        for (int i = 0; i < dataList.size(); i++) {
+            //创建一行
+            HSSFRow currentRow = sheet.createRow(i + 1);
+            //第一列创建并赋值
+            currentRow.createCell(0).setCellValue(new HSSFRichTextString(dataList.get(i).getId()));
+            currentRow.createCell(1).setCellValue(new HSSFRichTextString(dataList.get(i).getType()));
+            currentRow.createCell(2).setCellValue(new HSSFRichTextString(dataList.get(i).getName()));
+            currentRow.createCell(3).setCellValue(new HSSFRichTextString(dataList.get(i).getUserName()));
+            currentRow.createCell(4).setCellValue(new HSSFRichTextString(dataList.get(i).getDataOne()));
+            currentRow.createCell(5).setCellValue(new HSSFRichTextString(dataList.get(i).getDataTwo()));
+            currentRow.createCell(6).setCellValue(new HSSFRichTextString(dataList.get(i).getDataThree()));
+            currentRow.createCell(7).setCellValue(new HSSFRichTextString(dataList.get(i).getDataFour()));
+            currentRow.createCell(8).setCellValue(new HSSFRichTextString(dataList.get(i).getDataFive()));
+            currentRow.createCell(9).setCellValue(new HSSFRichTextString(dataList.get(i).getDataSix()));
+        }
+
+        OutputStream outputStream = null;
+        String downloadUrl = "/" + fileName + ".xls";
+        try {
+            File dest0 = new File(filePath + downloadUrl);
+            if (!dest0.getParentFile().exists()) {
+                dest0.getParentFile().mkdirs();
+                //检测文件是否存在
+            }
+            File file = new File(filePath + downloadUrl);
+            file.createNewFile();
+            outputStream = new FileOutputStream(filePath + downloadUrl);
+            workbook.write(outputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.flush();
+                    outputStream.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "download" + downloadUrl;
     }
 }
