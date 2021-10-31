@@ -3,6 +3,7 @@ package com.sunjh.xiyiji.controller.xuyujie;
 import com.sunjh.xiyiji.data.result.BasePageResult;
 import com.sunjh.xiyiji.data.result.BaseResult;
 import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
+import com.sunjh.xiyiji.data.xuyujie.DownloadSelectedDataRequest;
 import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
@@ -29,6 +30,8 @@ public class XuyujieController {
 
     @Autowired
     private XuyujieLogic xuyujieLogic;
+
+    private static final String DOWNLOAD_URL_PREFIX = "http://110.42.167.234:6789/download";
 
     @PostMapping("api/xuyujie/upload_txt_file")
     public BaseResult<String> upload(@RequestParam("filename") MultipartFile file) {
@@ -63,9 +66,15 @@ public class XuyujieController {
 
     @PostMapping("api/xuyuejie/download_all_data_by_condition")
     public BaseResult<String> downloadAllByCondition(@RequestBody XuyujieQueryCondition condition) {
-        String prefix = "http://110.42.167.234:6789/download";
+
         String downloadUrl = xuyujieLogic.downloadAllByCondition(condition);
-        return new BaseResult<String>().success(prefix + downloadUrl);
+        return new BaseResult<String>().success(DOWNLOAD_URL_PREFIX + downloadUrl);
+    }
+
+    @PostMapping("api/xuyuejie/download_selected_data")
+    public BaseResult<String> downloadPartData(@RequestBody DownloadSelectedDataRequest request) {
+        String downloadUrl = xuyujieLogic.downloadSelectedData(request.getDataList(), request.getDataType());
+        return new BaseResult<String>().success(DOWNLOAD_URL_PREFIX + downloadUrl);
     }
 
 }

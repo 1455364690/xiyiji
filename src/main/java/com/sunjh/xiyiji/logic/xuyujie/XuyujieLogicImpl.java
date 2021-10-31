@@ -192,8 +192,14 @@ public class XuyujieLogicImpl implements XuyujieLogic {
     public String downloadAllByCondition(XuyujieQueryCondition condition) {
         List<XuyujieUploadVO> voList = this.getDataListByCondition(condition);
         String fileName = condition.getDataFileType() + "-" + System.currentTimeMillis();
-        List<String > tabList = Arrays.asList("数据id", "数据类型", "数据名称", "姓名", "数据1", "数据2", "数据3", "数据4", "数据5", "数据6");
-        String url = xuyujieService.createExcel(downloadPath, fileName, condition.getDataFileType(), tabList, voList);
-        return url;
+        List<String> tabList = Arrays.asList("数据id", "数据类型", "数据名称", "姓名", "数据1", "数据2", "数据3", "数据4", "数据5", "数据6");
+        return xuyujieService.createExcel(downloadPath, fileName, condition.getDataFileType(), tabList, voList);
+    }
+
+    @Override
+    public String downloadSelectedData(List<XuyujieUploadVO> xuyujieUploadVOList, String dataType) {
+        List<String> tabList = Arrays.asList("数据id", "数据类型", "数据名称", "姓名", "数据1", "数据2", "数据3", "数据4", "数据5", "数据6");
+        String fileName = dataType + "-" + System.currentTimeMillis();
+        return xuyujieService.createExcel(downloadPath, fileName, dataType, tabList, xuyujieUploadVOList);
     }
 }
