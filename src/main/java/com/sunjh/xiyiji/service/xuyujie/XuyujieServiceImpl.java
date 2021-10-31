@@ -120,6 +120,38 @@ public class XuyujieServiceImpl implements XuyujieService {
     }
 
     @Override
+    public List<Duration> getAllDurationByUserName(String userName) {
+        if (StringUtils.isEmpty(userName)) {
+            return (List<Duration>) durationDAO.findAll();
+        }
+        return durationDAO.findByUserName(userName);
+    }
+
+    @Override
+    public List<MeanF0> getAllMeanF0ByUserName(String userName) {
+        if (StringUtils.isEmpty(userName)) {
+            return (List<MeanF0>) meanF0DAO.findAll();
+        }
+        return meanF0DAO.findByUserName(userName);
+    }
+
+    @Override
+    public List<ExcursionSize> getAllExcursionSizeByUserName(String userName) {
+        if (StringUtils.isEmpty(userName)) {
+            return (List<ExcursionSize>) excursionSizeDAO.findAll();
+        }
+        return excursionSizeDAO.findByUserName(userName);
+    }
+
+    @Override
+    public List<F0Acceleration> getAllF0AccelerationyUserName(String userName) {
+        if (StringUtils.isEmpty(userName)) {
+            return (List<F0Acceleration>) f0AccelerationDAO.findAll();
+        }
+        return f0AccelerationDAO.findByUserName(userName);
+    }
+
+    @Override
     public List<MeanF0> getMeanF0DataListByCondition(XuyujieQueryCondition condition) {
         Pageable pageable = PageRequest.of(condition.getPageNum(), condition.getPageSize());
         if (StringUtils.isEmpty(condition.getUserName())) {
@@ -174,6 +206,18 @@ public class XuyujieServiceImpl implements XuyujieService {
                 default:
                     return 0;
             }
+        }
+    }
+
+    @Override
+    public List<XuyujieUploadVO> getAllByUserNameAndType(String userName, String type) {
+        switch (type) {
+            case "duration":return getAllDurationByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertDuration2XuyujieUploadVO).collect(Collectors.toList());
+            case "meanf0":return getAllMeanF0ByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertMeanF02XuyujieUploadVO).collect(Collectors.toList());
+            case "excursionsize": return getAllExcursionSizeByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertExcursionSize2XuyujieUploadVO).collect(Collectors.toList());
+            case "f0acceleration":return getAllF0AccelerationyUserName(userName).stream().map(XuyujieUploadVOConvertor::convertF0Acceleration2XuyujieUploadVO).collect(Collectors.toList());
+            default:
+                return null;
         }
     }
 

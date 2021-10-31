@@ -36,6 +36,14 @@ public interface XuyujieService {
 
     List<Duration> getDurationDataListByCondition(XuyujieQueryCondition condition);
 
+    List<Duration> getAllDurationByUserName(String userName);
+
+    List<MeanF0> getAllMeanF0ByUserName(String userName);
+
+    List<ExcursionSize> getAllExcursionSizeByUserName(String userName);
+
+    List<F0Acceleration> getAllF0AccelerationyUserName(String userName);
+
     List<MeanF0> getMeanF0DataListByCondition(XuyujieQueryCondition condition);
 
     List<F0Acceleration> getF0AccelerationDataListByCondition(XuyujieQueryCondition condition);
@@ -43,6 +51,8 @@ public interface XuyujieService {
     List<ExcursionSize> getExcursionSizeDataListByCondition(XuyujieQueryCondition condition);
 
     int countByCondition(XuyujieQueryCondition condition);
+
+    List<XuyujieUploadVO> getAllByUserNameAndType(String userName,String type);
 
     String createExcel(String filePath, String fileName,String type, List<String> tabList, List<XuyujieUploadVO> dataList);
 }

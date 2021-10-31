@@ -1,5 +1,6 @@
 package com.sunjh.xiyiji.dao.xuyujiedao;
 
+import com.sunjh.xiyiji.data.xuyujiemodel.ExcursionSize;
 import com.sunjh.xiyiji.data.xuyujiemodel.F0Acceleration;
 import com.sunjh.xiyiji.data.xuyujiemodel.MeanF0;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,7 @@ import java.util.Optional;
  * @version 1.0
  * @date 2021/10/31 1:11 上午
  */
-public interface F0AccelerationDAO  extends CrudRepository<F0Acceleration, Long> {
+public interface F0AccelerationDAO extends CrudRepository<F0Acceleration, Long> {
     @Override
     <S extends F0Acceleration> S save(S s);
 
@@ -35,6 +36,9 @@ public interface F0AccelerationDAO  extends CrudRepository<F0Acceleration, Long>
 
     @Query(value = "select d from F0Acceleration d where 1=1")
     Page<F0Acceleration> findPageable(Pageable pageable);
+
+    @Override
+    Iterable<F0Acceleration> findAll();
 
     long countByUserName(String userName);
 

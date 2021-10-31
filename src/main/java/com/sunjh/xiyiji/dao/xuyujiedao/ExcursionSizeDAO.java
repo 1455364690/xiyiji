@@ -36,6 +36,9 @@ public interface ExcursionSizeDAO extends CrudRepository<ExcursionSize, Long> {
     @Query(value = "select d from ExcursionSize d where 1=1")
     Page<ExcursionSize> findPageable(Pageable pageable);
 
+    @Override
+    Iterable<ExcursionSize> findAll();
+
     long countByUserName(String userName);
 
     long countAllByUserNameNotNull();

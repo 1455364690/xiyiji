@@ -2,6 +2,7 @@ package com.sunjh.xiyiji.dao.xuyujiedao;
 
 import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
 import com.sunjh.xiyiji.data.xuyujiemodel.ExcursionSize;
+import com.sunjh.xiyiji.data.xuyujiemodel.F0Acceleration;
 import com.sunjh.xiyiji.data.xuyujiemodel.MeanF0;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,9 @@ public interface MeanF0DAO extends CrudRepository<MeanF0, Long> {
 
     @Query(value = "select d from MeanF0 d where 1=1")
     Page<MeanF0> findPageable(Pageable pageable);
+
+    @Override
+    Iterable<MeanF0> findAll();
 
     long countByUserName(String userName);
 
