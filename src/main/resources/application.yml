@@ -32,7 +32,7 @@ logging:
   file:
     name: /Users/sunjh/IdeaProjects/www/log/myLog.log
 xuyujie:
-  filePath: /Users/sunjh/IdeaProjects/xiyiji/file
+  filePath: /var/www/file
   downloadPath: /var/www/download
 skywalking:
   datasource: http://192.168.31.221:8003

@@ -242,6 +242,6 @@ public class XuyujieServiceImpl implements XuyujieService {
                 e.printStackTrace();
             }
         }
-        return "download" + downloadUrl;
+        return downloadUrl;
     }
 }

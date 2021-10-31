@@ -63,8 +63,9 @@ public class XuyujieController {
 
     @PostMapping("api/xuyuejie/download_all_data_by_condition")
     public BaseResult<String> downloadAllByCondition(@RequestBody XuyujieQueryCondition condition) {
+        String prefix = "http://110.42.167.234:6789/download";
         String downloadUrl = xuyujieLogic.downloadAllByCondition(condition);
-        return new BaseResult<String>().success(downloadUrl);
+        return new BaseResult<String>().success(prefix + downloadUrl);
     }
 
 }
