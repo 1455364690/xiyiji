@@ -194,8 +194,7 @@ public class XuyujieLogicImpl implements XuyujieLogic {
         String fileName = condition.getDataFileType() + "-" + System.currentTimeMillis();
         System.out.println(voList.size());
         List<String> tabList = Arrays.asList("数据id", "数据类型", "数据名称", "姓名", "数据1", "数据2", "数据3", "数据4", "数据5", "数据6");
-        return "";
-        //return xuyujieService.createExcel(downloadPath, fileName, condition.getDataFileType(), tabList, voList);
+        return xuyujieService.createExcel(downloadPath, fileName, condition.getDataFileType(), tabList, voList);
     }
 
     @Override
