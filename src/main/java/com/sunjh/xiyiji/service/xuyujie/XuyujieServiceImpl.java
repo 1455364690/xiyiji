@@ -27,8 +27,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
 import java.util.OptionalDouble;
+import java.util.Set;
 import java.util.concurrent.locks.Condition;
 import java.util.stream.Collectors;
 
@@ -212,10 +214,14 @@ public class XuyujieServiceImpl implements XuyujieService {
     @Override
     public List<XuyujieUploadVO> getAllByUserNameAndType(String userName, String type) {
         switch (type) {
-            case "duration":return getAllDurationByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertDuration2XuyujieUploadVO).collect(Collectors.toList());
-            case "meanf0":return getAllMeanF0ByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertMeanF02XuyujieUploadVO).collect(Collectors.toList());
-            case "excursionsize": return getAllExcursionSizeByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertExcursionSize2XuyujieUploadVO).collect(Collectors.toList());
-            case "f0acceleration":return getAllF0AccelerationyUserName(userName).stream().map(XuyujieUploadVOConvertor::convertF0Acceleration2XuyujieUploadVO).collect(Collectors.toList());
+            case "duration":
+                return getAllDurationByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertDuration2XuyujieUploadVO).collect(Collectors.toList());
+            case "meanf0":
+                return getAllMeanF0ByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertMeanF02XuyujieUploadVO).collect(Collectors.toList());
+            case "excursionsize":
+                return getAllExcursionSizeByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertExcursionSize2XuyujieUploadVO).collect(Collectors.toList());
+            case "f0acceleration":
+                return getAllF0AccelerationyUserName(userName).stream().map(XuyujieUploadVOConvertor::convertF0Acceleration2XuyujieUploadVO).collect(Collectors.toList());
             default:
                 return null;
         }
@@ -246,20 +252,41 @@ public class XuyujieServiceImpl implements XuyujieService {
             cell.setCellStyle(headerStyle);
         }
 
+        Set<Integer> intonationSet = new HashSet<>();
+        intonationSet.add(1);
+        intonationSet.add(3);
+        intonationSet.add(5);
+        intonationSet.add(7);
+        //"数据id", "group", "nation", "tone", "intonation", "句子长度", "数据类型",
+        // "数据名称", "姓名", "数据1", "数据2", "数据3", "数据4", "数据5", "数据6"
+
         for (int i = 0; i < dataList.size(); i++) {
             //创建一行
             HSSFRow currentRow = sheet.createRow(i + 1);
-            //第一列创建并赋值
+            //赋值
+            String[] split = dataList.get(i).getType().substring(1).split("-");
             currentRow.createCell(0).setCellValue(new HSSFRichTextString(dataList.get(i).getId()));
-            currentRow.createCell(1).setCellValue(new HSSFRichTextString(dataList.get(i).getType()));
-            currentRow.createCell(2).setCellValue(new HSSFRichTextString(dataList.get(i).getName()));
-            currentRow.createCell(3).setCellValue(new HSSFRichTextString(dataList.get(i).getUserName()));
-            currentRow.createCell(4).setCellValue(new HSSFRichTextString(dataList.get(i).getDataOne()));
-            currentRow.createCell(5).setCellValue(new HSSFRichTextString(dataList.get(i).getDataTwo()));
-            currentRow.createCell(6).setCellValue(new HSSFRichTextString(dataList.get(i).getDataThree()));
-            currentRow.createCell(7).setCellValue(new HSSFRichTextString(dataList.get(i).getDataFour()));
-            currentRow.createCell(8).setCellValue(new HSSFRichTextString(dataList.get(i).getDataFive()));
-            currentRow.createCell(9).setCellValue(new HSSFRichTextString(dataList.get(i).getDataSix()));
+            //group
+            currentRow.createCell(1).setCellValue(new HSSFRichTextString(split[1]));
+            //nation
+            currentRow.createCell(2).setCellValue(new HSSFRichTextString(split[0] + "." + split[1] + "." + split[2]));
+            //tone
+            currentRow.createCell(3).setCellValue(new HSSFRichTextString(split[2]));
+            //intonation
+            currentRow.createCell(4).setCellValue(new HSSFRichTextString(intonationSet.contains(Integer.parseInt(split[0])) ? "2" : "1"));
+            //句子长度
+            currentRow.createCell(5).setCellValue(new HSSFRichTextString("" + countLength(dataList.get(i))));
+            //place
+            currentRow.createCell(5).setCellValue(new HSSFRichTextString(""));
+            currentRow.createCell(7).setCellValue(new HSSFRichTextString(dataList.get(i).getType()));
+            currentRow.createCell(8).setCellValue(new HSSFRichTextString(dataList.get(i).getName()));
+            currentRow.createCell(9).setCellValue(new HSSFRichTextString(dataList.get(i).getUserName()));
+            currentRow.createCell(10).setCellValue(new HSSFRichTextString(dataList.get(i).getDataOne()));
+            currentRow.createCell(11).setCellValue(new HSSFRichTextString(dataList.get(i).getDataTwo()));
+            currentRow.createCell(12).setCellValue(new HSSFRichTextString(dataList.get(i).getDataThree()));
+            currentRow.createCell(13).setCellValue(new HSSFRichTextString(dataList.get(i).getDataFour()));
+            currentRow.createCell(14).setCellValue(new HSSFRichTextString(dataList.get(i).getDataFive()));
+            currentRow.createCell(15).setCellValue(new HSSFRichTextString(dataList.get(i).getDataSix()));
         }
 
         OutputStream outputStream = null;
@@ -287,5 +314,36 @@ public class XuyujieServiceImpl implements XuyujieService {
             }
         }
         return downloadUrl;
+    }
+
+    public int countLength(XuyujieUploadVO vo) {
+        if (!StringUtils.isEmpty(vo.getDataSix())) {
+            return 6;
+        }
+        if (!StringUtils.isEmpty(vo.getDataFive())) {
+            return 5;
+        }
+        if (!StringUtils.isEmpty(vo.getDataFour())) {
+            return 4;
+        }
+        if (!StringUtils.isEmpty(vo.getDataThree())) {
+            return 3;
+        }
+        if (!StringUtils.isEmpty(vo.getDataTwo())) {
+            return 2;
+        }
+        if (!StringUtils.isEmpty(vo.getDataOne())) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        Set<Integer> intonationSet = new HashSet<>();
+        intonationSet.add(1);
+        intonationSet.add(3);
+        intonationSet.add(5);
+        intonationSet.add(7);
+        System.out.println(intonationSet.contains(Integer.parseInt("2")));
     }
 }
