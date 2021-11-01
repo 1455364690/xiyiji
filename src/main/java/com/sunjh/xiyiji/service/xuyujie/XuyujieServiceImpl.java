@@ -277,7 +277,7 @@ public class XuyujieServiceImpl implements XuyujieService {
             //句子长度
             currentRow.createCell(5).setCellValue(new HSSFRichTextString("" + countLength(dataList.get(i))));
             //place
-            currentRow.createCell(5).setCellValue(new HSSFRichTextString(""));
+            currentRow.createCell(6).setCellValue(new HSSFRichTextString(""));
             currentRow.createCell(7).setCellValue(new HSSFRichTextString(dataList.get(i).getType()));
             currentRow.createCell(8).setCellValue(new HSSFRichTextString(dataList.get(i).getName()));
             currentRow.createCell(9).setCellValue(new HSSFRichTextString(dataList.get(i).getUserName()));
