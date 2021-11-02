@@ -26,5 +26,7 @@ public interface XuyujieLogic {
 
     String downloadAllByCondition(XuyujieQueryCondition condition);
 
+    String downloadAllFourDataByCondition(XuyujieQueryCondition condition);
+
     String downloadSelectedData(List<XuyujieUploadVO> xuyujieUploadVOList, String dataType);
 }

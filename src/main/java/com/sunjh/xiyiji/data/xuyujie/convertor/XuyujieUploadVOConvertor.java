@@ -42,7 +42,7 @@ public class XuyujieUploadVOConvertor {
         Duration duration = new Duration();
         duration.setName(xuyujieUploadVO.getName());
         duration.setType(xuyujieUploadVO.getType());
-        duration.setUserName("test");
+        duration.setUserName(xuyujieUploadVO.getUserName());
         duration.setDataOne(xuyujieUploadVO.getDataOne());
         duration.setDataTwo(xuyujieUploadVO.getDataTwo());
         duration.setDataThree(xuyujieUploadVO.getDataThree());
@@ -76,7 +76,7 @@ public class XuyujieUploadVOConvertor {
         F0Acceleration f0Acceleration = new F0Acceleration();
         f0Acceleration.setName(xuyujieUploadVO.getName());
         f0Acceleration.setType(xuyujieUploadVO.getType());
-        f0Acceleration.setUserName("test");
+        f0Acceleration.setUserName(xuyujieUploadVO.getUserName());
         f0Acceleration.setDataOne(xuyujieUploadVO.getDataOne());
         f0Acceleration.setDataTwo(xuyujieUploadVO.getDataTwo());
         f0Acceleration.setDataThree(xuyujieUploadVO.getDataThree());
@@ -93,7 +93,7 @@ public class XuyujieUploadVOConvertor {
         ExcursionSize excursionSize = new ExcursionSize();
         excursionSize.setName(xuyujieUploadVO.getName());
         excursionSize.setType(xuyujieUploadVO.getType());
-        excursionSize.setUserName("test");
+        excursionSize.setUserName(xuyujieUploadVO.getUserName());
         excursionSize.setDataOne(xuyujieUploadVO.getDataOne());
         excursionSize.setDataTwo(xuyujieUploadVO.getDataTwo());
         excursionSize.setDataThree(xuyujieUploadVO.getDataThree());

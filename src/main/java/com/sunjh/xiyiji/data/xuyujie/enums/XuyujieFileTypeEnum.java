@@ -9,7 +9,7 @@ public enum XuyujieFileTypeEnum {
 
     DURATION("DURATION", "duration", "duration"),
     MEAN_F0("MEAN_F0", "meanf0", "mean_f0"),
-    F0_ACCELERATION("F0_ACCELERATION", "f0acceleration", "f0acceration"),
+    F0_ACCELERATION("F0_ACCELERATION", "finalvelocity", "finalvelocity"),
     EXCURSION_SIZE("EXCURSION_SIZE", "excursionsize", "excursionsize");
 
     public final String code;

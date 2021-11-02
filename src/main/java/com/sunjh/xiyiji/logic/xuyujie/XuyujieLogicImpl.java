@@ -89,7 +89,7 @@ public class XuyujieLogicImpl implements XuyujieLogic {
             while (null != (line = bufferedReader.readLine())) {
                 String[] otherLine = line.split("\t");
                 BaseVoiceEntity baseVoiceEntity = new BaseVoiceEntity();
-                baseVoiceEntity.setName(otherLine[0]);
+                baseVoiceEntity.setName(fileName.split("\\.")[0]);
                 baseVoiceEntity.setFileName(fileName);
                 baseVoiceEntity.setType(otherLine[0]);
                 List<String> dataList = new LinkedList<>(Arrays.asList(otherLine).subList(1, otherLine.length));
@@ -172,7 +172,7 @@ public class XuyujieLogicImpl implements XuyujieLogic {
             case "meanf0":
                 return xuyujieService.getMeanF0DataListByCondition(condition).stream().
                         map(XuyujieUploadVOConvertor::convertMeanF02XuyujieUploadVO).collect(Collectors.toList());
-            case "f0acceleration":
+            case "finalvelocity":
                 return xuyujieService.getF0AccelerationDataListByCondition(condition).stream().
                         map(XuyujieUploadVOConvertor::convertF0Acceleration2XuyujieUploadVO).collect(Collectors.toList());
             case "excursionsize":
@@ -193,13 +193,37 @@ public class XuyujieLogicImpl implements XuyujieLogic {
         List<XuyujieUploadVO> voList = xuyujieService.getAllByUserNameAndType(condition.getUserName(), condition.getDataFileType());
         String fileName = condition.getDataFileType() + "-" + System.currentTimeMillis();
         System.out.println(voList.size());
-        List<String> tabList = Arrays.asList("数据id", "group", "nation", "tone", "intonation", "句子长度","place", "数据类型", "数据名称", "姓名", "数据1", "数据2", "数据3", "数据4", "数据5", "数据6");
+        List<String> tabList = Arrays.asList("数据id", "group", "nation", "tone", "intonation", "句子长度", "place", "数据类型", "数据名称", "姓名", "数据", "文件类型");
+        return xuyujieService.createExcel(downloadPath, fileName, condition.getDataFileType(), tabList, voList);
+    }
+
+    @Override
+    public String downloadAllFourDataByCondition(XuyujieQueryCondition condition) {
+        List<XuyujieUploadVO> voList = new LinkedList<>();
+        List<XuyujieUploadVO> tmpList = xuyujieService.getAllByUserNameAndType(condition.getUserName(), XuyujieFileTypeEnum.DURATION.value);
+        if (null != tmpList) {
+            voList.addAll(tmpList);
+        }
+        tmpList = xuyujieService.getAllByUserNameAndType(condition.getUserName(), XuyujieFileTypeEnum.MEAN_F0.value);
+        if (null != tmpList) {
+            voList.addAll(tmpList);
+        }
+        tmpList = xuyujieService.getAllByUserNameAndType(condition.getUserName(), XuyujieFileTypeEnum.F0_ACCELERATION.value);
+        if (null != tmpList) {
+            voList.addAll(tmpList);
+        }
+        tmpList = xuyujieService.getAllByUserNameAndType(condition.getUserName(), XuyujieFileTypeEnum.EXCURSION_SIZE.value);
+        if (null != tmpList) {
+            voList.addAll(tmpList);
+        }
+        String fileName = "alldata-" + System.currentTimeMillis();
+        List<String> tabList = Arrays.asList("数据id", "group", "nation", "tone", "intonation", "句子长度", "place", "数据类型", "数据名称", "姓名", "数据", "文件类型");
         return xuyujieService.createExcel(downloadPath, fileName, condition.getDataFileType(), tabList, voList);
     }
 
     @Override
     public String downloadSelectedData(List<XuyujieUploadVO> xuyujieUploadVOList, String dataType) {
-        List<String> tabList = Arrays.asList("数据id", "group", "nation", "tone", "intonation", "句子长度","place", "数据类型", "数据名称", "姓名", "数据1", "数据2", "数据3", "数据4", "数据5", "数据6");
+        List<String> tabList = Arrays.asList("数据id", "group", "nation", "tone", "intonation", "句子长度", "place", "数据类型", "数据名称", "姓名", "数据", "文件类型");
         String fileName = dataType + "-" + System.currentTimeMillis();
         return xuyujieService.createExcel(downloadPath, fileName, dataType, tabList, xuyujieUploadVOList);
     }

@@ -27,10 +27,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.List;
-import java.util.OptionalDouble;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.locks.Condition;
 import java.util.stream.Collectors;
 
@@ -148,7 +145,12 @@ public class XuyujieServiceImpl implements XuyujieService {
     @Override
     public List<F0Acceleration> getAllF0AccelerationyUserName(String userName) {
         if (StringUtils.isEmpty(userName)) {
-            return (List<F0Acceleration>) f0AccelerationDAO.findAll();
+            try {
+                return (List<F0Acceleration>) f0AccelerationDAO.findAll();
+            } catch (Exception e) {
+                return new LinkedList<>();
+            }
+
         }
         return f0AccelerationDAO.findByUserName(userName);
     }
@@ -188,7 +190,7 @@ public class XuyujieServiceImpl implements XuyujieService {
                     return (int) durationDAO.countByUserName(condition.getUserName());
                 case "meanf0":
                     return (int) meanF0DAO.countByUserName(condition.getUserName());
-                case "f0acceleration":
+                case "finalvelocity":
                     return (int) f0AccelerationDAO.countByUserName(condition.getUserName());
                 case "excursionsize":
                     return (int) excursionSizeDAO.countByUserName(condition.getUserName());
@@ -201,7 +203,7 @@ public class XuyujieServiceImpl implements XuyujieService {
                     return (int) durationDAO.countAllByUserNameNotNull();
                 case "meanf0":
                     return (int) meanF0DAO.countAllByUserNameNotNull();
-                case "f0acceleration":
+                case "finalvelocity":
                     return (int) f0AccelerationDAO.countAllByUserNameNotNull();
                 case "excursionsize":
                     return (int) excursionSizeDAO.countAllByUserNameNotNull();
@@ -220,7 +222,7 @@ public class XuyujieServiceImpl implements XuyujieService {
                 return getAllMeanF0ByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertMeanF02XuyujieUploadVO).collect(Collectors.toList());
             case "excursionsize":
                 return getAllExcursionSizeByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertExcursionSize2XuyujieUploadVO).collect(Collectors.toList());
-            case "f0acceleration":
+            case "finalvelocity":
                 return getAllF0AccelerationyUserName(userName).stream().map(XuyujieUploadVOConvertor::convertF0Acceleration2XuyujieUploadVO).collect(Collectors.toList());
             default:
                 return null;
@@ -260,33 +262,77 @@ public class XuyujieServiceImpl implements XuyujieService {
         //"数据id", "group", "nation", "tone", "intonation", "句子长度", "数据类型",
         // "数据名称", "姓名", "数据1", "数据2", "数据3", "数据4", "数据5", "数据6"
 
+        int lineNo = 1;
         for (int i = 0; i < dataList.size(); i++) {
-            //创建一行
-            HSSFRow currentRow = sheet.createRow(i + 1);
-            //赋值
-            String[] split = dataList.get(i).getType().substring(1).split("-");
-            currentRow.createCell(0).setCellValue(new HSSFRichTextString(dataList.get(i).getId()));
-            //group
-            currentRow.createCell(1).setCellValue(new HSSFRichTextString(split[1]));
-            //nation
-            currentRow.createCell(2).setCellValue(new HSSFRichTextString(split[0] + "." + split[1] + "." + split[2]));
-            //tone
-            currentRow.createCell(3).setCellValue(new HSSFRichTextString(split[2]));
-            //intonation
-            currentRow.createCell(4).setCellValue(new HSSFRichTextString(intonationSet.contains(Integer.parseInt(split[0])) ? "2" : "1"));
-            //句子长度
-            currentRow.createCell(5).setCellValue(new HSSFRichTextString("" + countLength(dataList.get(i))));
-            //place
-            currentRow.createCell(6).setCellValue(new HSSFRichTextString(""));
-            currentRow.createCell(7).setCellValue(new HSSFRichTextString(dataList.get(i).getType()));
-            currentRow.createCell(8).setCellValue(new HSSFRichTextString(dataList.get(i).getName()));
-            currentRow.createCell(9).setCellValue(new HSSFRichTextString(dataList.get(i).getUserName()));
-            currentRow.createCell(10).setCellValue(new HSSFRichTextString(dataList.get(i).getDataOne()));
-            currentRow.createCell(11).setCellValue(new HSSFRichTextString(dataList.get(i).getDataTwo()));
-            currentRow.createCell(12).setCellValue(new HSSFRichTextString(dataList.get(i).getDataThree()));
-            currentRow.createCell(13).setCellValue(new HSSFRichTextString(dataList.get(i).getDataFour()));
-            currentRow.createCell(14).setCellValue(new HSSFRichTextString(dataList.get(i).getDataFive()));
-            currentRow.createCell(15).setCellValue(new HSSFRichTextString(dataList.get(i).getDataSix()));
+            for (int j = 0; j < 6; j++) {
+                String data = "";
+                if (j == 0) {
+                    if (StringUtils.isEmpty(dataList.get(i).getDataOne())) {
+                        break;
+                    } else {
+                        data = dataList.get(i).getDataOne();
+                    }
+                } else if (j == 1) {
+                    if (StringUtils.isEmpty(dataList.get(i).getDataTwo())) {
+                        break;
+                    } else {
+                        data = dataList.get(i).getDataTwo();
+                    }
+                } else if (j == 2) {
+                    if (StringUtils.isEmpty(dataList.get(i).getDataThree())) {
+                        break;
+                    } else {
+                        data = dataList.get(i).getDataThree();
+                    }
+                } else if (j == 3) {
+                    if (StringUtils.isEmpty(dataList.get(i).getDataFour())) {
+                        break;
+                    } else {
+                        data = dataList.get(i).getDataFour();
+                    }
+                } else if (j == 4) {
+                    if (StringUtils.isEmpty(dataList.get(i).getDataFive())) {
+                        break;
+                    } else {
+                        data = dataList.get(i).getDataFive();
+                    }
+                } else if (j == 5) {
+                    if (StringUtils.isEmpty(dataList.get(i).getDataSix())) {
+                        break;
+                    } else {
+                        data = dataList.get(i).getDataSix();
+                    }
+                }
+                //创建一行
+                HSSFRow currentRow = sheet.createRow(lineNo);
+                lineNo++;
+                //赋值
+                String[] split = dataList.get(i).getType().substring(1).split("-");
+                currentRow.createCell(0).setCellValue(new HSSFRichTextString(dataList.get(i).getId()));
+                //group
+                currentRow.createCell(1).setCellValue(new HSSFRichTextString(split[1]));
+                //nation
+                currentRow.createCell(2).setCellValue(new HSSFRichTextString(split[0] + "." + split[1] + "." + split[2]));
+                //tone
+                currentRow.createCell(3).setCellValue(new HSSFRichTextString(split[2]));
+                //intonation
+                currentRow.createCell(4).setCellValue(new HSSFRichTextString(intonationSet.contains(Integer.parseInt(split[0])) ? "2" : "1"));
+                //句子长度
+                currentRow.createCell(5).setCellValue(new HSSFRichTextString("" + countLength(dataList.get(i))));
+                //place
+                currentRow.createCell(6).setCellValue(new HSSFRichTextString("" + (j + 1)));
+                //type
+                currentRow.createCell(7).setCellValue(new HSSFRichTextString(dataList.get(i).getType()));
+                //name
+                currentRow.createCell(8).setCellValue(new HSSFRichTextString(dataList.get(i).getName()));
+                //username
+                currentRow.createCell(9).setCellValue(new HSSFRichTextString(dataList.get(i).getUserName()));
+                //data
+                currentRow.createCell(10).setCellValue(new HSSFRichTextString(data));
+                //filetype
+                currentRow.createCell(11).setCellValue(new HSSFRichTextString(dataList.get(i).getName()));
+            }
+
         }
 
         OutputStream outputStream = null;

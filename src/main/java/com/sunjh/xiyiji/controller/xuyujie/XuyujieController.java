@@ -77,4 +77,10 @@ public class XuyujieController {
         return new BaseResult<String>().success(DOWNLOAD_URL_PREFIX + downloadUrl);
     }
 
+    @PostMapping("api/xuyuejie/download_all_four_data_by_condition")
+    public BaseResult<String> downloadAllFourDataByCondition(@RequestBody XuyujieQueryCondition condition) {
+        String downloadUrl = xuyujieLogic.downloadAllFourDataByCondition(condition);
+        return new BaseResult<String>().success(DOWNLOAD_URL_PREFIX + downloadUrl);
+    }
+
 }
