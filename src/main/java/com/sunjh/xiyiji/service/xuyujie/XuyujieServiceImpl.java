@@ -1,19 +1,16 @@
 package com.sunjh.xiyiji.service.xuyujie;
 
-import com.sunjh.xiyiji.dao.xuyujiedao.DurationDAO;
-import com.sunjh.xiyiji.dao.xuyujiedao.ExcursionSizeDAO;
-import com.sunjh.xiyiji.dao.xuyujiedao.F0AccelerationDAO;
-import com.sunjh.xiyiji.dao.xuyujiedao.MeanF0DAO;
+import com.sunjh.xiyiji.dao.xuyujiedao.*;
 import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
-import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
-import com.sunjh.xiyiji.data.xuyujiemodel.ExcursionSize;
-import com.sunjh.xiyiji.data.xuyujiemodel.F0Acceleration;
-import com.sunjh.xiyiji.data.xuyujiemodel.MeanF0;
+import com.sunjh.xiyiji.data.xuyujiemodel.*;
+import com.sunjh.xiyiji.util.XiyijiLoggerUtil;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +35,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class XuyujieServiceImpl implements XuyujieService {
+
+    private static final Logger logger = LoggerFactory.getLogger(XuyujieServiceImpl.class);
     @Autowired
     private DurationDAO durationDAO;
 
@@ -49,6 +48,60 @@ public class XuyujieServiceImpl implements XuyujieService {
 
     @Autowired
     private ExcursionSizeDAO excursionSizeDAO;
+
+    @Autowired
+    private VoiceDataDAO voiceDataDAO;
+
+    @Override
+    public boolean saveAllVoiceData(List<VoiceData> voiceDataList) {
+        try {
+            voiceDataDAO.saveAll(voiceDataList);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public VoiceData saveVoiceData(VoiceData voiceData) {
+        return voiceDataDAO.save(voiceData);
+    }
+
+    @Override
+    public int countVoiceDataListByFileTypeAndOwner(String fileType, String owner) {
+        try {
+            long count;
+            if (!StringUtils.isEmpty(owner)) {
+                count = voiceDataDAO.countAllByFileTypeAndOwner(fileType, owner);
+            } else {
+                count = voiceDataDAO.countAllByFileType(fileType);
+            }
+            return (int) count;
+        } catch (Exception e) {
+            XiyijiLoggerUtil.error(logger, e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
+    public int countVoiceDataListByFileTypeAndDefaultOwner(String fileType) {
+        return 0;
+    }
+
+    @Override
+    public List<VoiceData> findVoiceDataListByCondition(XuyujieQueryCondition condition) {
+        Pageable pageable = PageRequest.of(condition.getPageNum(), condition.getPageSize());
+        try {
+            Page<VoiceData> pages = voiceDataDAO.findByFileTypeAndUserNamePageable(condition.getDataFileType(), condition.getUserName(), pageable);
+            if (!pages.isEmpty()) {
+                return pages.getContent();
+            }
+            return new LinkedList<>();
+        } catch (Exception e) {
+            return new LinkedList<>();
+        }
+    }
 
     @Override
     public boolean saveAllDurations(List<Duration> durationList) {

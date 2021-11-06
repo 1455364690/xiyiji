@@ -3,10 +3,7 @@ package com.sunjh.xiyiji.data.xuyujie.convertor;
 import com.sunjh.xiyiji.dao.xuyujiedao.DurationDAO;
 import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
-import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
-import com.sunjh.xiyiji.data.xuyujiemodel.ExcursionSize;
-import com.sunjh.xiyiji.data.xuyujiemodel.F0Acceleration;
-import com.sunjh.xiyiji.data.xuyujiemodel.MeanF0;
+import com.sunjh.xiyiji.data.xuyujiemodel.*;
 
 import java.util.List;
 
@@ -177,5 +174,13 @@ public class XuyujieUploadVOConvertor {
         xuyujieUploadVO.setDataSix(duration.getDataSix());
         xuyujieUploadVO.setUserName(duration.getUserName());
         return xuyujieUploadVO;
+    }
+
+    public static XuyujieUploadVO convertVoiceDataVO2DO(XuyujieUploadVO xuyujieUploadVO) {
+        return null;
+    }
+
+    public static VoiceData convertVoiceDataDO2VO(VoiceData voiceData) {
+        return null;
     }
 }
