@@ -5,11 +5,11 @@ import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
 import com.sunjh.xiyiji.data.xuyujie.enums.XuyujieFileTypeEnum;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
-import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
-import com.sunjh.xiyiji.data.xuyujiemodel.ExcursionSize;
-import com.sunjh.xiyiji.data.xuyujiemodel.F0Acceleration;
-import com.sunjh.xiyiji.data.xuyujiemodel.MeanF0;
+import com.sunjh.xiyiji.data.xuyujiemodel.*;
 import com.sunjh.xiyiji.service.xuyujie.XuyujieService;
+import com.sunjh.xiyiji.util.XiyijiLoggerUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class XuyujieLogicImpl implements XuyujieLogic {
+    Logger logger = LoggerFactory.getLogger(XuyujieLogicImpl.class);
 
     @Value("${xuyujie.filePath}")
     private String templatePath;
@@ -105,82 +106,43 @@ public class XuyujieLogicImpl implements XuyujieLogic {
 
     @Override
     public boolean saveFileContent(List<XuyujieUploadVO> xuyujieUploadVOList) {
-        if (xuyujieUploadVOList.get(0).getFileName().contains(XuyujieFileTypeEnum.DURATION.getValue())) {
-            List<Duration> durationList = xuyujieUploadVOList.stream().map(XuyujieUploadVOConvertor::convertVO2Duration).collect(Collectors.toList());
-            if (durationList.size() == 0) {
-                return false;
-            }
-            for (Duration duration : durationList) {
-                List<Duration> list = xuyujieService.findDurationByNameAndTypeAndUserName(duration.getName(), duration.getType(), duration.getUserName());
-                if (null == list || list.size() == 0) {
-                    xuyujieService.saveDuration(duration);
-                }
-            }
-            return true;
+        String fileType = "";
+        switch (xuyujieUploadVOList.get(0).getName()) {
+            case XuyujieConstants.DURATION:
+                fileType = XuyujieConstants.DURATION;
+                break;
+            case XuyujieConstants.EXCURSION_SIZE:
+                fileType = XuyujieConstants.EXCURSION_SIZE;
+                break;
+            case XuyujieConstants.MEAN_F0:
+                fileType = XuyujieConstants.MEAN_F0;
+                break;
+            case XuyujieConstants.FINAL_VELOCITY:
+                fileType = XuyujieConstants.FINAL_VELOCITY;
+                break;
+            default:
+                break;
         }
-
-        if (xuyujieUploadVOList.get(0).getFileName().contains(XuyujieFileTypeEnum.MEAN_F0.getValue())) {
-            List<MeanF0> meanF0List = xuyujieUploadVOList.stream().map(XuyujieUploadVOConvertor::convertVO2MeanF0).collect(Collectors.toList());
-            if (meanF0List.size() == 0) {
-                return false;
-            }
-            for (MeanF0 meanF0 : meanF0List) {
-                List<MeanF0> list = xuyujieService.findMeanF0ByNameAndTypeAndUserName(meanF0.getName(), meanF0.getType(), meanF0.getUserName());
-                if (null == list || list.size() == 0) {
-                    xuyujieService.saveMeanF0(meanF0);
-                }
-            }
-            return true;
+        List<VoiceData> voiceDataList = xuyujieUploadVOList.stream().map(XuyujieUploadVOConvertor::convertVoiceDataVO2DO).collect(Collectors.toList());
+        for (VoiceData voiceData : voiceDataList) {
+            voiceData.setFileType(fileType);
         }
-
-        if (xuyujieUploadVOList.get(0).getFileName().contains(XuyujieFileTypeEnum.F0_ACCELERATION.getValue())) {
-            List<F0Acceleration> f0AccelerationList = xuyujieUploadVOList.stream().map(XuyujieUploadVOConvertor::convertVO2F0Acceleration).collect(Collectors.toList());
-            if (f0AccelerationList.size() == 0) {
-                return false;
-            }
-            for (F0Acceleration f0Acceleration : f0AccelerationList) {
-                List<F0Acceleration> list = xuyujieService.findF0AccelerationByNameAndTypeAndUserName(f0Acceleration.getName(), f0Acceleration.getType(), f0Acceleration.getUserName());
-                if (null == list || list.size() == 0) {
-                    xuyujieService.saveF0Acceleration(f0Acceleration);
-                }
-            }
+        try {
+            xuyujieService.saveAllVoiceData(voiceDataList);
             return true;
+        } catch (Exception e) {
+            XiyijiLoggerUtil.error(logger, e.getMessage());
+            return false;
         }
-
-        if (xuyujieUploadVOList.get(0).getFileName().contains(XuyujieFileTypeEnum.EXCURSION_SIZE.getValue())) {
-            List<ExcursionSize> excursionSizeList = xuyujieUploadVOList.stream().map(XuyujieUploadVOConvertor::convertVO2ExcursionSize).collect(Collectors.toList());
-            if (excursionSizeList.size() == 0) {
-                return false;
-            }
-            for (ExcursionSize excursionSize : excursionSizeList) {
-                List<ExcursionSize> list = xuyujieService.findExcursionSizeByNameAndTypeAndUserName(excursionSize.getName(), excursionSize.getType(), excursionSize.getUserName());
-                if (null == list || list.size() == 0) {
-                    xuyujieService.saveExcursionSize(excursionSize);
-                }
-            }
-            return true;
-        }
-        return false;
     }
 
     @Override
     public List<XuyujieUploadVO> getDataListByCondition(XuyujieQueryCondition condition) {
-        switch (condition.getDataFileType()) {
-            case "duration":
-                return xuyujieService.getDurationDataListByCondition(condition).stream().
-                        map(XuyujieUploadVOConvertor::convertDuration2XuyujieUploadVO).collect(Collectors.toList());
-            case "meanf0":
-                return xuyujieService.getMeanF0DataListByCondition(condition).stream().
-                        map(XuyujieUploadVOConvertor::convertMeanF02XuyujieUploadVO).collect(Collectors.toList());
-            case "finalvelocity":
-                return xuyujieService.getF0AccelerationDataListByCondition(condition).stream().
-                        map(XuyujieUploadVOConvertor::convertF0Acceleration2XuyujieUploadVO).collect(Collectors.toList());
-            case "excursionsize":
-                return xuyujieService.getExcursionSizeDataListByCondition(condition).stream().
-                        map(XuyujieUploadVOConvertor::convertExcursionSize2XuyujieUploadVO).collect(Collectors.toList());
-            default:
-                return null;
+        List<VoiceData> voiceDataList = xuyujieService.findVoiceDataListByCondition(condition);
+        if (null == voiceDataList || voiceDataList.isEmpty()) {
+            return new LinkedList<>();
         }
+        return voiceDataList.stream().map(XuyujieUploadVOConvertor::convertVoiceDataDO2VO).collect(Collectors.toList());
     }
 
     @Override

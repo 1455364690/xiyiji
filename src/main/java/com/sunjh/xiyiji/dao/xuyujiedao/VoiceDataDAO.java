@@ -24,6 +24,8 @@ public interface VoiceDataDAO extends CrudRepository<VoiceData, Long> {
 
     List<VoiceData> findByUserName(String userName);
 
+    List<VoiceData> findByFileTypeAndUserName(String fileType, String userName);
+
     List<VoiceData> findByNameAndTypeAndUserName(String name, String type, String username);
 
     /**
@@ -53,9 +55,11 @@ public interface VoiceDataDAO extends CrudRepository<VoiceData, Long> {
 
     long countAllByUserNameNotNull();
 
-    long countAllByFileTypeAndUserNameNotNull(String fileType, String userName);
+    long countAllByFileTypeAndUserNameNotNull(String fileType);
 
     long countAllByFileTypeAndOwner(String fileType, String owner);
+
+    long countAllByFileTypeAndUserName(String fileType, String userName);
 
     long countAllByFileType(String fileType);
 }

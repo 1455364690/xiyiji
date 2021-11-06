@@ -5,6 +5,7 @@ import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import com.sunjh.xiyiji.data.xuyujiemodel.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -176,11 +177,36 @@ public class XuyujieUploadVOConvertor {
         return xuyujieUploadVO;
     }
 
-    public static XuyujieUploadVO convertVoiceDataVO2DO(XuyujieUploadVO xuyujieUploadVO) {
-        return null;
+    public static VoiceData convertVoiceDataVO2DO(XuyujieUploadVO vo) {
+        VoiceData voiceData = new VoiceData();
+        voiceData.setFileType(vo.getFileType());
+        voiceData.setDataOne(vo.getDataOne());
+        voiceData.setDataTwo(vo.getDataTwo());
+        voiceData.setDataThree(vo.getDataThree());
+        voiceData.setDataFour(vo.getDataFour());
+        voiceData.setDataFive(vo.getDataFive());
+        voiceData.setDataSix(vo.getDataSix());
+        voiceData.setOwner(vo.getOwner());
+        voiceData.setType(vo.getType());
+        voiceData.setName(vo.getName());
+        voiceData.setUserName(vo.getUserName());
+        return voiceData;
     }
 
-    public static VoiceData convertVoiceDataDO2VO(VoiceData voiceData) {
-        return null;
+    public static XuyujieUploadVO convertVoiceDataDO2VO(VoiceData voiceData) {
+        XuyujieUploadVO vo = new XuyujieUploadVO();
+        vo.setFileName(voiceData.getFileType());
+        vo.setUserName(voiceData.getUserName());
+        vo.setDataOne(voiceData.getDataOne());
+        vo.setDataTwo(voiceData.getDataTwo());
+        vo.setDataThree(voiceData.getDataThree());
+        vo.setDataFour(voiceData.getDataFour());
+        vo.setDataFive(voiceData.getDataFive());
+        vo.setDataSix(voiceData.getDataSix());
+        vo.setType(voiceData.getType());
+        vo.setName(voiceData.getName());
+        vo.setType(voiceData.getType());
+        vo.setOwner(voiceData.getOwner());
+        return vo;
     }
 }

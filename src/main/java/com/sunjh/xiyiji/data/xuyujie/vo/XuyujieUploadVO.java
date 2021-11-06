@@ -20,4 +20,8 @@ public class XuyujieUploadVO {
     private String dataFour;
     private String dataFive;
     private String dataSix;
+    private String fileType;
+    private String owner;
+    private String gmtCreate;
+    private String gmtModified;
 }

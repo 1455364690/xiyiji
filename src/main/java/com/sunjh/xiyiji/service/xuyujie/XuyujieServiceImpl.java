@@ -37,17 +37,6 @@ import java.util.stream.Collectors;
 public class XuyujieServiceImpl implements XuyujieService {
 
     private static final Logger logger = LoggerFactory.getLogger(XuyujieServiceImpl.class);
-    @Autowired
-    private DurationDAO durationDAO;
-
-    @Autowired
-    private F0AccelerationDAO f0AccelerationDAO;
-
-    @Autowired
-    private MeanF0DAO meanF0DAO;
-
-    @Autowired
-    private ExcursionSizeDAO excursionSizeDAO;
 
     @Autowired
     private VoiceDataDAO voiceDataDAO;
@@ -93,7 +82,12 @@ public class XuyujieServiceImpl implements XuyujieService {
     public List<VoiceData> findVoiceDataListByCondition(XuyujieQueryCondition condition) {
         Pageable pageable = PageRequest.of(condition.getPageNum(), condition.getPageSize());
         try {
-            Page<VoiceData> pages = voiceDataDAO.findByFileTypeAndUserNamePageable(condition.getDataFileType(), condition.getUserName(), pageable);
+            Page<VoiceData> pages = null;
+            if (StringUtils.isEmpty(condition.getUserName())) {
+                pages = voiceDataDAO.findByFileTypePageable(condition.getDataFileType(), pageable);
+            } else {
+                pages = voiceDataDAO.findByFileTypeAndUserNamePageable(condition.getDataFileType(), condition.getUserName(), pageable);
+            }
             if (!pages.isEmpty()) {
                 return pages.getContent();
             }
@@ -104,182 +98,21 @@ public class XuyujieServiceImpl implements XuyujieService {
     }
 
     @Override
-    public boolean saveAllDurations(List<Duration> durationList) {
-        try {
-            durationDAO.saveAll(durationList);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
-    public List<Duration> findDurationByNameAndTypeAndUserName(String name, String type, String username) {
-        return durationDAO.findByNameAndTypeAndUserName(name, type, username);
-    }
-
-    @Override
-    public List<ExcursionSize> findExcursionSizeByNameAndTypeAndUserName(String name, String type, String username) {
-        return excursionSizeDAO.findByNameAndTypeAndUserName(name, type, username);
-    }
-
-    @Override
-    public List<MeanF0> findMeanF0ByNameAndTypeAndUserName(String name, String type, String username) {
-        return meanF0DAO.findByNameAndTypeAndUserName(name, type, username);
-    }
-
-    @Override
-    public List<F0Acceleration> findF0AccelerationByNameAndTypeAndUserName(String name, String type, String username) {
-        return f0AccelerationDAO.findByNameAndTypeAndUserName(name, type, username);
-    }
-
-    @Override
-    public Duration saveDuration(Duration duration) {
-        duration.setGmtCreate(new Timestamp(System.currentTimeMillis()));
-        duration.setGmtModified(new Timestamp(System.currentTimeMillis()));
-        return durationDAO.save(duration);
-    }
-
-    @Override
-    public F0Acceleration saveF0Acceleration(F0Acceleration f0Acceleration) {
-        f0Acceleration.setGmtCreate(new Timestamp(System.currentTimeMillis()));
-        f0Acceleration.setGmtModified(new Timestamp(System.currentTimeMillis()));
-        return f0AccelerationDAO.save(f0Acceleration);
-    }
-
-    @Override
-    public MeanF0 saveMeanF0(MeanF0 meanF0) {
-        meanF0.setGmtCreate(new Timestamp(System.currentTimeMillis()));
-        meanF0.setGmtModified(new Timestamp(System.currentTimeMillis()));
-        return meanF0DAO.save(meanF0);
-    }
-
-    @Override
-    public ExcursionSize saveExcursionSize(ExcursionSize excursionSize) {
-        excursionSize.setGmtCreate(new Timestamp(System.currentTimeMillis()));
-        excursionSize.setGmtModified(new Timestamp(System.currentTimeMillis()));
-        return excursionSizeDAO.save(excursionSize);
-    }
-
-    @Override
-    public List<Duration> getDurationDataListByCondition(XuyujieQueryCondition condition) {
-        Pageable pageable = PageRequest.of(condition.getPageNum(), condition.getPageSize());
-        if (StringUtils.isEmpty(condition.getUserName())) {
-            return durationDAO.findPageable(pageable).getContent();
-        }
-        return durationDAO.findByUserNamePageable(condition.getUserName(), pageable).getContent();
-    }
-
-    @Override
-    public List<Duration> getAllDurationByUserName(String userName) {
-        if (StringUtils.isEmpty(userName)) {
-            return (List<Duration>) durationDAO.findAll();
-        }
-        return durationDAO.findByUserName(userName);
-    }
-
-    @Override
-    public List<MeanF0> getAllMeanF0ByUserName(String userName) {
-        if (StringUtils.isEmpty(userName)) {
-            return (List<MeanF0>) meanF0DAO.findAll();
-        }
-        return meanF0DAO.findByUserName(userName);
-    }
-
-    @Override
-    public List<ExcursionSize> getAllExcursionSizeByUserName(String userName) {
-        if (StringUtils.isEmpty(userName)) {
-            return (List<ExcursionSize>) excursionSizeDAO.findAll();
-        }
-        return excursionSizeDAO.findByUserName(userName);
-    }
-
-    @Override
-    public List<F0Acceleration> getAllF0AccelerationyUserName(String userName) {
-        if (StringUtils.isEmpty(userName)) {
-            try {
-                return (List<F0Acceleration>) f0AccelerationDAO.findAll();
-            } catch (Exception e) {
-                return new LinkedList<>();
-            }
-
-        }
-        return f0AccelerationDAO.findByUserName(userName);
-    }
-
-    @Override
-    public List<MeanF0> getMeanF0DataListByCondition(XuyujieQueryCondition condition) {
-        Pageable pageable = PageRequest.of(condition.getPageNum(), condition.getPageSize());
-        if (StringUtils.isEmpty(condition.getUserName())) {
-            return meanF0DAO.findPageable(pageable).getContent();
-        }
-        return meanF0DAO.findByUserNamePageable(condition.getUserName(), pageable).getContent();
-    }
-
-    @Override
-    public List<F0Acceleration> getF0AccelerationDataListByCondition(XuyujieQueryCondition condition) {
-        Pageable pageable = PageRequest.of(condition.getPageNum(), condition.getPageSize());
-        if (StringUtils.isEmpty(condition.getUserName())) {
-            return f0AccelerationDAO.findPageable(pageable).getContent();
-        }
-        return f0AccelerationDAO.findByUserNamePageable(condition.getUserName(), pageable).getContent();
-    }
-
-    @Override
-    public List<ExcursionSize> getExcursionSizeDataListByCondition(XuyujieQueryCondition condition) {
-        Pageable pageable = PageRequest.of(condition.getPageNum(), condition.getPageSize());
-        if (StringUtils.isEmpty(condition.getUserName())) {
-            return excursionSizeDAO.findPageable(pageable).getContent();
-        }
-        return excursionSizeDAO.findByUserNamePageable(condition.getUserName(), pageable).getContent();
-    }
-
-    @Override
     public int countByCondition(XuyujieQueryCondition condition) {
-        if (!StringUtils.isEmpty(condition.getUserName())) {
-            switch (condition.getDataFileType()) {
-                case "duration":
-                    return (int) durationDAO.countByUserName(condition.getUserName());
-                case "meanf0":
-                    return (int) meanF0DAO.countByUserName(condition.getUserName());
-                case "finalvelocity":
-                    return (int) f0AccelerationDAO.countByUserName(condition.getUserName());
-                case "excursionsize":
-                    return (int) excursionSizeDAO.countByUserName(condition.getUserName());
-                default:
-                    return 0;
-            }
+        if (StringUtils.isEmpty(condition.getUserName())) {
+            return (int) voiceDataDAO.countAllByFileTypeAndUserNameNotNull(condition.getDataFileType());
         } else {
-            switch (condition.getDataFileType()) {
-                case "duration":
-                    return (int) durationDAO.countAllByUserNameNotNull();
-                case "meanf0":
-                    return (int) meanF0DAO.countAllByUserNameNotNull();
-                case "finalvelocity":
-                    return (int) f0AccelerationDAO.countAllByUserNameNotNull();
-                case "excursionsize":
-                    return (int) excursionSizeDAO.countAllByUserNameNotNull();
-                default:
-                    return 0;
-            }
+            return (int) voiceDataDAO.countAllByFileTypeAndUserName(condition.getDataFileType(), condition.getUserName());
         }
     }
 
     @Override
     public List<XuyujieUploadVO> getAllByUserNameAndType(String userName, String type) {
-        switch (type) {
-            case "duration":
-                return getAllDurationByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertDuration2XuyujieUploadVO).collect(Collectors.toList());
-            case "meanf0":
-                return getAllMeanF0ByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertMeanF02XuyujieUploadVO).collect(Collectors.toList());
-            case "excursionsize":
-                return getAllExcursionSizeByUserName(userName).stream().map(XuyujieUploadVOConvertor::convertExcursionSize2XuyujieUploadVO).collect(Collectors.toList());
-            case "finalvelocity":
-                return getAllF0AccelerationyUserName(userName).stream().map(XuyujieUploadVOConvertor::convertF0Acceleration2XuyujieUploadVO).collect(Collectors.toList());
-            default:
-                return null;
+        List<VoiceData> voiceDataList = voiceDataDAO.findByFileTypeAndUserName(type, userName);
+        if (null == voiceDataList || voiceDataList.isEmpty()) {
+            return new LinkedList<>();
         }
+        return voiceDataList.stream().map(XuyujieUploadVOConvertor::convertVoiceDataDO2VO).collect(Collectors.toList());
     }
 
     @Override
