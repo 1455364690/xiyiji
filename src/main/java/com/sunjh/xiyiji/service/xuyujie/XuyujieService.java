@@ -2,10 +2,7 @@ package com.sunjh.xiyiji.service.xuyujie;
 
 import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
-import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
-import com.sunjh.xiyiji.data.xuyujiemodel.ExcursionSize;
-import com.sunjh.xiyiji.data.xuyujiemodel.F0Acceleration;
-import com.sunjh.xiyiji.data.xuyujiemodel.MeanF0;
+import com.sunjh.xiyiji.data.xuyujiemodel.*;
 
 import java.awt.print.Pageable;
 import java.util.List;
@@ -56,5 +53,11 @@ public interface XuyujieService {
 
     String createExcel(String filePath, String fileName,String type, List<String> tabList, List<XuyujieUploadVO> dataList);
 
+    Boolean saveNormTime(NormTime normTime);
 
+    List<NormTime> getAllNormTime();
+
+    List<NormTime> getAllNormTimeByType(String type);
+
+    Boolean saveNormTimeList(List<NormTime> nowTime);
 }

@@ -18,6 +18,8 @@ public interface XuyujieLogic {
 
     List<BaseVoiceEntity> analyseFile(String fileName);
 
+    Boolean saveNormTimes(String fileName);
+
     boolean saveFileContent(List<XuyujieUploadVO> xuyujieUploadVOList);
 
     List<XuyujieUploadVO> getDataListByCondition(XuyujieQueryCondition condition);

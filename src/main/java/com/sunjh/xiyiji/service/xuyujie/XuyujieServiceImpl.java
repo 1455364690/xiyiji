@@ -1,16 +1,10 @@
 package com.sunjh.xiyiji.service.xuyujie;
 
-import com.sunjh.xiyiji.dao.xuyujiedao.DurationDAO;
-import com.sunjh.xiyiji.dao.xuyujiedao.ExcursionSizeDAO;
-import com.sunjh.xiyiji.dao.xuyujiedao.F0AccelerationDAO;
-import com.sunjh.xiyiji.dao.xuyujiedao.MeanF0DAO;
+import com.sunjh.xiyiji.dao.xuyujiedao.*;
 import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
-import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
-import com.sunjh.xiyiji.data.xuyujiemodel.ExcursionSize;
-import com.sunjh.xiyiji.data.xuyujiemodel.F0Acceleration;
-import com.sunjh.xiyiji.data.xuyujiemodel.MeanF0;
+import com.sunjh.xiyiji.data.xuyujiemodel.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -49,6 +43,9 @@ public class XuyujieServiceImpl implements XuyujieService {
 
     @Autowired
     private ExcursionSizeDAO excursionSizeDAO;
+
+    @Autowired
+    private NormTimeDAO normTimeDAO;
 
     @Override
     public boolean saveAllDurations(List<Duration> durationList) {
@@ -360,6 +357,44 @@ public class XuyujieServiceImpl implements XuyujieService {
             }
         }
         return downloadUrl;
+    }
+
+    @Override
+    public Boolean saveNormTime(NormTime normTime) {
+        try {
+            normTimeDAO.save(normTime);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public List<NormTime> getAllNormTime() {
+        return (List<NormTime>) normTimeDAO.findAll();
+    }
+
+    @Override
+    public List<NormTime> getAllNormTimeByType(String type) {
+        try {
+            List<NormTime> normTimeList = normTimeDAO.findAllByType(type);
+            if (null == normTimeList) {
+                return new ArrayList<NormTime>();
+            }
+            return normTimeList;
+        } catch (Exception e) {
+            return new ArrayList<NormTime>();
+        }
+    }
+
+    @Override
+    public Boolean saveNormTimeList(List<NormTime> nowTime) {
+        try {
+            normTimeDAO.saveAll(nowTime);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     public int countLength(XuyujieUploadVO vo) {

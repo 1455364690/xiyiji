@@ -1,14 +1,12 @@
 package com.sunjh.xiyiji.logic.xuyujie;
 
+import com.alibaba.fastjson.JSON;
 import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
 import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
 import com.sunjh.xiyiji.data.xuyujie.enums.XuyujieFileTypeEnum;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
-import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
-import com.sunjh.xiyiji.data.xuyujiemodel.ExcursionSize;
-import com.sunjh.xiyiji.data.xuyujiemodel.F0Acceleration;
-import com.sunjh.xiyiji.data.xuyujiemodel.MeanF0;
+import com.sunjh.xiyiji.data.xuyujiemodel.*;
 import com.sunjh.xiyiji.service.xuyujie.XuyujieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,10 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -100,6 +95,38 @@ public class XuyujieLogicImpl implements XuyujieLogic {
             return result;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    @Override
+    public Boolean saveNormTimes(String fileName) {
+        try {
+            File file = new File(templatePath, fileName);
+            if (!file.exists()) {
+                System.out.println("null");
+                return null;
+            }
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            List<NormTime> normTimeList = new LinkedList<>();
+            //第一行数据弃置
+            String line = bufferedReader.readLine();
+            //之后的行
+            while (null != (line = bufferedReader.readLine())) {
+                String[] lineData = line.split("\t");
+                List<Double> lineDataList = new ArrayList<>(60);
+                for (int i = 1; i < lineData.length; i++) {
+                    lineDataList.add(Double.parseDouble(lineData[i]));
+                }
+                NormTime normTime = new NormTime();
+                normTime.setData(JSON.toJSONString(lineDataList));
+                normTime.setType(lineData[0]);
+                normTimeList.add(normTime);
+            }
+            xuyujieService.saveNormTimeList(normTimeList);
+            bufferedReader.close();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 

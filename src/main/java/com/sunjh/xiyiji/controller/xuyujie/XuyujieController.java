@@ -39,6 +39,13 @@ public class XuyujieController {
         return new BaseResult<String>().success(newFileName);
     }
 
+    @PostMapping("api/xuyujie/upload_txt_file/cal_avg")
+    public BaseResult<Boolean> uploadAndCalAvg(@RequestParam("filename") MultipartFile file) {
+        String newFileName = xuyujieLogic.saveFile(file);
+        Boolean saveResult = xuyujieLogic.saveNormTimes(newFileName);
+        return new BaseResult<Boolean>().success(saveResult);
+    }
+
     @GetMapping("api/xuyujie/get_analyse_table_from_txt_file/{fileName}")
     public BaseResult<List<XuyujieUploadVO>> analyse(@PathVariable String fileName) {
         List<BaseVoiceEntity> baseVoiceEntityList = xuyujieLogic.analyseFile(fileName);
