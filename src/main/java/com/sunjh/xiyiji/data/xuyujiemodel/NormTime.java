@@ -21,8 +21,8 @@ public class NormTime {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "unique")
-    private String unique;
+    @Column(name = "unique_name")
+    private String uniqueName;
 
     @Column(name = "data")
     private String data;

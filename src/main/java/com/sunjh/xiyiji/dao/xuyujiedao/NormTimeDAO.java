@@ -1,6 +1,8 @@
 package com.sunjh.xiyiji.dao.xuyujiedao;
 
+import com.sunjh.xiyiji.data.xuyujiemodel.Duration;
 import com.sunjh.xiyiji.data.xuyujiemodel.NormTime;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -16,10 +18,16 @@ public interface NormTimeDAO extends CrudRepository<NormTime, Long> {
     <S extends NormTime> S save(S entity);
 
     @Override
+    <S extends NormTime> Iterable<S> saveAll(Iterable<S> iterable);
+
+    @Override
     Iterable<NormTime> findAll();
 
     @Override
     Optional<NormTime> findById(Long id);
 
     List<NormTime> findAllByType(String type);
+
+    @Query(value = "select distinct(d.type) from NormTime d where 1=1")
+    List<String> findAllType();
 }

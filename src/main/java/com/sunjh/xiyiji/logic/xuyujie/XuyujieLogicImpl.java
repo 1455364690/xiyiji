@@ -5,6 +5,7 @@ import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
 import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
 import com.sunjh.xiyiji.data.xuyujie.enums.XuyujieFileTypeEnum;
+import com.sunjh.xiyiji.data.xuyujie.vo.NormTimeVO;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import com.sunjh.xiyiji.data.xuyujiemodel.*;
 import com.sunjh.xiyiji.service.xuyujie.XuyujieService;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -120,9 +122,17 @@ public class XuyujieLogicImpl implements XuyujieLogic {
                 NormTime normTime = new NormTime();
                 normTime.setData(JSON.toJSONString(lineDataList));
                 normTime.setType(lineData[0]);
+                normTime.setGmtCreate(new Timestamp(System.currentTimeMillis()));
+                normTime.setGmtModify(new Timestamp(System.currentTimeMillis()));
+                normTime.setExtInfo("");
                 normTimeList.add(normTime);
             }
-            xuyujieService.saveNormTimeList(normTimeList);
+            try {
+                xuyujieService.saveNormTimeList(normTimeList);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             bufferedReader.close();
             return true;
         } catch (Exception e) {
@@ -253,5 +263,26 @@ public class XuyujieLogicImpl implements XuyujieLogic {
         List<String> tabList = Arrays.asList("数据id", "group", "nation", "tone", "intonation", "句子长度", "place", "数据类型", "数据名称", "姓名", "数据", "文件类型");
         String fileName = dataType + "-" + System.currentTimeMillis();
         return xuyujieService.createExcel(downloadPath, fileName, dataType, tabList, xuyujieUploadVOList);
+    }
+
+    @Override
+    public List<NormTimeVO> calNormTimeAvg() {
+        return xuyujieService.calNormTimeAvg();
+    }
+
+    @Override
+    public List<NormTimeVO> calNormTimeAvgStep2() {
+        return xuyujieService.calNormTimeAvgStep2();
+    }
+
+    @Override
+    public String downloadAvgData(List<NormTimeVO> normTimeVOList) {
+        List<String> tabList = new LinkedList<>();
+        tabList.add("type");
+        for (int i = 1; i <= 60; i++) {
+            tabList.add("data_" + i);
+        }
+        String fileName = "avg-" + System.currentTimeMillis();
+        return xuyujieService.createExcelAvg(downloadPath, fileName, "avg", tabList, normTimeVOList);
     }
 }

@@ -1,8 +1,10 @@
 package com.sunjh.xiyiji.service.xuyujie;
 
+import com.alibaba.fastjson.JSON;
 import com.sunjh.xiyiji.dao.xuyujiedao.*;
 import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
+import com.sunjh.xiyiji.data.xuyujie.vo.NormTimeVO;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import com.sunjh.xiyiji.data.xuyujiemodel.*;
 import org.apache.poi.hssf.usermodel.*;
@@ -360,6 +362,67 @@ public class XuyujieServiceImpl implements XuyujieService {
     }
 
     @Override
+    public String createExcelAvg(String filePath, String fileName, String type, List<String> tabList, List<NormTimeVO> dataList) {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet(type + "表");
+        //设置表格列宽度为10个字节
+        sheet.setDefaultColumnWidth(30);
+        //创建标题的显示样式
+        HSSFCellStyle headerStyle = workbook.createCellStyle();
+        headerStyle.setFillForegroundColor(IndexedColors.YELLOW.index);
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        //创建第一行表头
+        HSSFRow headrow = sheet.createRow(0);
+        for (int i = 0; i < tabList.size(); i++) {
+            //创建一个单元格
+            HSSFCell cell = headrow.createCell(i);
+
+            //创建一个内容对象
+            HSSFRichTextString text = new HSSFRichTextString(tabList.get(i));
+
+            //将内容对象的文字内容写入到单元格中
+            cell.setCellValue(text);
+            cell.setCellStyle(headerStyle);
+        }
+        int lineNo = 1;
+        for (NormTimeVO normTimeVO : dataList) {
+            //创建一行
+            HSSFRow currentRow = sheet.createRow(lineNo);
+            lineNo++;
+            currentRow.createCell(0).setCellValue(normTimeVO.getType());
+            for (int j = 0; j < normTimeVO.getDataList().size(); j++) {
+                currentRow.createCell(j + 1).setCellValue(normTimeVO.getDataList().get(j));
+            }
+        }
+        OutputStream outputStream = null;
+        String downloadUrl = "/" + fileName + ".xls";
+        try {
+            File dest0 = new File(filePath + downloadUrl);
+            if (!dest0.getParentFile().exists()) {
+                dest0.getParentFile().mkdirs();
+                //检测文件是否存在
+            }
+            File file = new File(filePath + downloadUrl);
+            file.createNewFile();
+            outputStream = new FileOutputStream(filePath + downloadUrl);
+            workbook.write(outputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.flush();
+                    outputStream.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return downloadUrl;
+    }
+
+    @Override
     public Boolean saveNormTime(NormTime normTime) {
         try {
             normTimeDAO.save(normTime);
@@ -394,7 +457,41 @@ public class XuyujieServiceImpl implements XuyujieService {
         } catch (Exception e) {
             return false;
         }
+        calNormTimeAvg();
         return true;
+    }
+
+    @Override
+    public List<NormTimeVO> calNormTimeAvg() {
+        List<String> types = normTimeDAO.findAllType();
+        List<NormTimeVO> normTimeVOList = new LinkedList<>();
+        for (String type : types) {
+            NormTimeVO normTimeVO = new NormTimeVO();
+            normTimeVO.setType(type);
+            List<NormTime> normTimeList = normTimeDAO.findAllByType(type);
+            List<List<Double>> dataMap = new LinkedList<>();
+            List<String> avgList = new LinkedList<>();
+            for (NormTime normTime : normTimeList) {
+                List<Double> dataList = JSON.parseArray(normTime.getData(), Double.class);
+                dataMap.add(dataList);
+            }
+            for (int j = 0; j < dataMap.get(0).size(); j++) {
+                double total = 0;
+                for (List<Double> doubles : dataMap) {
+                    total += doubles.get(j);
+                }
+                avgList.add(String.format("%.3f", total / dataMap.size()));
+            }
+            normTimeVO.setDataList(avgList);
+            normTimeVOList.add(normTimeVO);
+        }
+        return normTimeVOList;
+    }
+
+    @Override
+    public List<NormTimeVO> calNormTimeAvgStep2() {
+        List<String> types = normTimeDAO.findAllType();
+        return null;
     }
 
     public int countLength(XuyujieUploadVO vo) {

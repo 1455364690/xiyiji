@@ -6,6 +6,7 @@ import com.sunjh.xiyiji.data.xuyujie.BaseVoiceEntity;
 import com.sunjh.xiyiji.data.xuyujie.DownloadSelectedDataRequest;
 import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
+import com.sunjh.xiyiji.data.xuyujie.vo.NormTimeVO;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import com.sunjh.xiyiji.logic.xuyujie.XuyujieLogic;
 import org.slf4j.Logger;
@@ -44,6 +45,24 @@ public class XuyujieController {
         String newFileName = xuyujieLogic.saveFile(file);
         Boolean saveResult = xuyujieLogic.saveNormTimes(newFileName);
         return new BaseResult<Boolean>().success(saveResult);
+    }
+
+    @GetMapping("api/xuyujie/cal_avg")
+    public BaseResult<List<NormTimeVO>> calAvg() {
+        List<NormTimeVO> normTimeVOList = xuyujieLogic.calNormTimeAvg();
+        return new BaseResult<List<NormTimeVO>>().success(normTimeVOList);
+    }
+
+    @GetMapping("api/xuyujie/cal_avg_step2")
+    public BaseResult<List<NormTimeVO>> calAvgStep2() {
+        List<NormTimeVO> normTimeVOList = xuyujieLogic.calNormTimeAvgStep2();
+        return new BaseResult<List<NormTimeVO>>().success(normTimeVOList);
+    }
+
+    @PostMapping("api/xuyujie/cal_avg/download")
+    public BaseResult<String> downloadAvgData(@RequestBody List<NormTimeVO> normTimeVOList) {
+        String downloadUrl = xuyujieLogic.downloadAvgData(normTimeVOList);
+        return new BaseResult<String>().success(DOWNLOAD_URL_PREFIX + downloadUrl);
     }
 
     @GetMapping("api/xuyujie/get_analyse_table_from_txt_file/{fileName}")

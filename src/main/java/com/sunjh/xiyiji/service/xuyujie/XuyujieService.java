@@ -1,6 +1,7 @@
 package com.sunjh.xiyiji.service.xuyujie;
 
 import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
+import com.sunjh.xiyiji.data.xuyujie.vo.NormTimeVO;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import com.sunjh.xiyiji.data.xuyujiemodel.*;
 
@@ -53,6 +54,8 @@ public interface XuyujieService {
 
     String createExcel(String filePath, String fileName,String type, List<String> tabList, List<XuyujieUploadVO> dataList);
 
+    String createExcelAvg(String filePath, String fileName,String type, List<String> tabList, List<NormTimeVO> dataList);
+
     Boolean saveNormTime(NormTime normTime);
 
     List<NormTime> getAllNormTime();
@@ -60,4 +63,8 @@ public interface XuyujieService {
     List<NormTime> getAllNormTimeByType(String type);
 
     Boolean saveNormTimeList(List<NormTime> nowTime);
+
+    List<NormTimeVO> calNormTimeAvg();
+
+    List<NormTimeVO> calNormTimeAvgStep2();
 }
