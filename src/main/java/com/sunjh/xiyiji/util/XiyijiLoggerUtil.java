@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
  * @date 2021/10/30 7:40 下午
  */
 public class XiyijiLoggerUtil {
-    public static void info(Logger logger, String... obj) {
-
+    public static void info(Logger logger, String obj) {
+        logger.info(obj);
     }
 }

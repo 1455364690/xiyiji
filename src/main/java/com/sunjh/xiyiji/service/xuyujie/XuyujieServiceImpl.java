@@ -1,15 +1,20 @@
 package com.sunjh.xiyiji.service.xuyujie;
 
 import com.alibaba.fastjson.JSON;
+import com.mysql.jdbc.log.LogUtils;
+import com.sunjh.xiyiji.controller.xuyujie.XuyujieController;
 import com.sunjh.xiyiji.dao.xuyujiedao.*;
 import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
 import com.sunjh.xiyiji.data.xuyujie.vo.NormTimeVO;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import com.sunjh.xiyiji.data.xuyujiemodel.*;
+import com.sunjh.xiyiji.util.XiyijiLoggerUtil;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +39,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class XuyujieServiceImpl implements XuyujieService {
+
+    private static Logger logger = LoggerFactory.getLogger(XuyujieServiceImpl.class);
     @Autowired
     private DurationDAO durationDAO;
 
@@ -466,6 +473,7 @@ public class XuyujieServiceImpl implements XuyujieService {
         List<String> types = normTimeDAO.findAllType();
         List<NormTimeVO> normTimeVOList = new LinkedList<>();
         for (String type : types) {
+            XiyijiLoggerUtil.info(logger, type);
             NormTimeVO normTimeVO = new NormTimeVO();
             normTimeVO.setType(type);
             List<NormTime> normTimeList = normTimeDAO.findAllByType(type);
