@@ -13,6 +13,7 @@ import com.sunjh.xiyiji.util.XiyijiLoggerUtil;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -237,23 +238,23 @@ public class XuyujieServiceImpl implements XuyujieService {
 
     @Override
     public String createExcel(String filePath, String fileName, String type, List<String> tabList, List<XuyujieUploadVO> dataList) {
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet(type + "表");
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet(type + "表");
         //设置表格列宽度为10个字节
         sheet.setDefaultColumnWidth(30);
         //创建标题的显示样式
-        HSSFCellStyle headerStyle = workbook.createCellStyle();
+        XSSFCellStyle headerStyle = workbook.createCellStyle();
         headerStyle.setFillForegroundColor(IndexedColors.YELLOW.index);
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
         //创建第一行表头
-        HSSFRow headrow = sheet.createRow(0);
+        XSSFRow headrow = sheet.createRow(0);
         for (int i = 0; i < tabList.size(); i++) {
             //创建一个单元格
-            HSSFCell cell = headrow.createCell(i);
+            XSSFCell cell = headrow.createCell(i);
 
             //创建一个内容对象
-            HSSFRichTextString text = new HSSFRichTextString(tabList.get(i));
+            XSSFRichTextString text = new XSSFRichTextString(tabList.get(i));
 
             //将内容对象的文字内容写入到单元格中
             cell.setCellValue(text);
@@ -310,33 +311,36 @@ public class XuyujieServiceImpl implements XuyujieService {
                     }
                 }
                 //创建一行
-                HSSFRow currentRow = sheet.createRow(lineNo);
+                XSSFRow currentRow = sheet.createRow(lineNo);
                 lineNo++;
                 //赋值
-                String[] split = dataList.get(i).getType().substring(1).split("-");
-                currentRow.createCell(0).setCellValue(new HSSFRichTextString(dataList.get(i).getId()));
+                byte[] zero = new byte[1];
+                zero[0] = (byte) 0;
+                String s = new String(zero);
+                String[] split = dataList.get(i).getType().replace(s, "").substring(1).split("-");
+                currentRow.createCell(0).setCellValue(new XSSFRichTextString(dataList.get(i).getId()));
                 //group
-                currentRow.createCell(1).setCellValue(new HSSFRichTextString(split[1]));
+                currentRow.createCell(1).setCellValue(new XSSFRichTextString(split[1]));
                 //nation
-                currentRow.createCell(2).setCellValue(new HSSFRichTextString(split[0] + "." + split[1] + "." + split[2]));
+                currentRow.createCell(2).setCellValue(new XSSFRichTextString(split[0] + "." + split[1] + "." + split[2]));
                 //tone
-                currentRow.createCell(3).setCellValue(new HSSFRichTextString(split[2]));
+                currentRow.createCell(3).setCellValue(new XSSFRichTextString(split[2]));
                 //intonation
-                currentRow.createCell(4).setCellValue(new HSSFRichTextString(intonationSet.contains(Integer.parseInt(split[0])) ? "2" : "1"));
+                currentRow.createCell(4).setCellValue(new XSSFRichTextString(intonationSet.contains(Integer.parseInt(split[0])) ? "2" : "1"));
                 //句子长度
-                currentRow.createCell(5).setCellValue(new HSSFRichTextString("" + countLength(dataList.get(i))));
+                currentRow.createCell(5).setCellValue(new XSSFRichTextString("" + countLength(dataList.get(i))));
                 //place
-                currentRow.createCell(6).setCellValue(new HSSFRichTextString("" + (j + 1)));
+                currentRow.createCell(6).setCellValue(new XSSFRichTextString("" + (j + 1)));
                 //type
-                currentRow.createCell(7).setCellValue(new HSSFRichTextString(dataList.get(i).getType()));
+                currentRow.createCell(7).setCellValue(new XSSFRichTextString(dataList.get(i).getType()));
                 //name
-                currentRow.createCell(8).setCellValue(new HSSFRichTextString(dataList.get(i).getName()));
+                currentRow.createCell(8).setCellValue(new XSSFRichTextString(dataList.get(i).getName()));
                 //username
-                currentRow.createCell(9).setCellValue(new HSSFRichTextString(dataList.get(i).getUserName()));
+                currentRow.createCell(9).setCellValue(new XSSFRichTextString(dataList.get(i).getUserName()));
                 //data
-                currentRow.createCell(10).setCellValue(new HSSFRichTextString(data));
+                currentRow.createCell(10).setCellValue(new XSSFRichTextString(data));
                 //filetype
-                currentRow.createCell(11).setCellValue(new HSSFRichTextString(dataList.get(i).getName()));
+                currentRow.createCell(11).setCellValue(new XSSFRichTextString(dataList.get(i).getName()));
             }
 
         }
@@ -370,23 +374,23 @@ public class XuyujieServiceImpl implements XuyujieService {
 
     @Override
     public String createExcelAvg(String filePath, String fileName, String type, List<String> tabList, List<NormTimeVO> dataList) {
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet(type + "表");
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet(type + "表");
         //设置表格列宽度为10个字节
         sheet.setDefaultColumnWidth(30);
         //创建标题的显示样式
-        HSSFCellStyle headerStyle = workbook.createCellStyle();
+        XSSFCellStyle headerStyle = workbook.createCellStyle();
         headerStyle.setFillForegroundColor(IndexedColors.YELLOW.index);
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
         //创建第一行表头
-        HSSFRow headrow = sheet.createRow(0);
+        XSSFRow headrow = sheet.createRow(0);
         for (int i = 0; i < tabList.size(); i++) {
             //创建一个单元格
-            HSSFCell cell = headrow.createCell(i);
+            XSSFCell cell = headrow.createCell(i);
 
             //创建一个内容对象
-            HSSFRichTextString text = new HSSFRichTextString(tabList.get(i));
+            XSSFRichTextString text = new XSSFRichTextString(tabList.get(i));
 
             //将内容对象的文字内容写入到单元格中
             cell.setCellValue(text);
@@ -395,7 +399,7 @@ public class XuyujieServiceImpl implements XuyujieService {
         int lineNo = 1;
         for (NormTimeVO normTimeVO : dataList) {
             //创建一行
-            HSSFRow currentRow = sheet.createRow(lineNo);
+            XSSFRow currentRow = sheet.createRow(lineNo);
             lineNo++;
             currentRow.createCell(0).setCellValue(normTimeVO.getType());
             for (int j = 0; j < normTimeVO.getDataList().size(); j++) {
@@ -464,7 +468,6 @@ public class XuyujieServiceImpl implements XuyujieService {
         } catch (Exception e) {
             return false;
         }
-        calNormTimeAvg();
         return true;
     }
 
@@ -485,8 +488,16 @@ public class XuyujieServiceImpl implements XuyujieService {
             }
             for (int j = 0; j < dataMap.get(0).size(); j++) {
                 double total = 0;
+                XiyijiLoggerUtil.info(logger, "当前数据点为:" + j);
+                int index = 0;
                 for (List<Double> doubles : dataMap) {
-                    total += doubles.get(j);
+                    index++;
+                    try {
+                        total += doubles.get(j);
+                    } catch (Exception e) {
+                        XiyijiLoggerUtil.info(logger, "当前index为:" + index + ",当前数据点为:" + j + ",type:" + type + "," + e.getMessage());
+                    }
+
                 }
                 avgList.add(String.format("%.3f", total / dataMap.size()));
             }
