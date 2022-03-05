@@ -38,4 +38,6 @@ public interface XuyujieLogic {
     List<NormTimeVO> calNormTimeAvgStep2();
 
     String downloadAvgData(List<NormTimeVO> normTimeVOList);
+
+    Boolean calDeltaM0AndDuration();
 }

@@ -9,6 +9,10 @@ import com.sunjh.xiyiji.data.xuyujie.vo.NormTimeVO;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import com.sunjh.xiyiji.data.xuyujiemodel.*;
 import com.sunjh.xiyiji.service.xuyujie.XuyujieService;
+import com.sunjh.xiyiji.service.xuyujie.XuyujieServiceImpl;
+import com.sunjh.xiyiji.util.XiyijiLoggerUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,6 +43,8 @@ public class XuyujieLogicImpl implements XuyujieLogic {
 
     @Autowired
     private XuyujieService xuyujieService;
+
+    private static Logger logger = LoggerFactory.getLogger(XuyujieLogicImpl.class);
 
     @Override
     public String saveFile(MultipartFile file) {
@@ -124,6 +130,7 @@ public class XuyujieLogicImpl implements XuyujieLogic {
                 normTime.setType(lineData[0]);
                 normTime.setGmtCreate(new Timestamp(System.currentTimeMillis()));
                 normTime.setGmtModify(new Timestamp(System.currentTimeMillis()));
+                normTime.setUniqueName(fileName.split("\\.")[0]);
                 normTime.setExtInfo("");
                 normTimeList.add(normTime);
             }
@@ -284,5 +291,10 @@ public class XuyujieLogicImpl implements XuyujieLogic {
         }
         String fileName = "avg-" + System.currentTimeMillis();
         return xuyujieService.createExcelAvg(downloadPath, fileName, "avg", tabList, normTimeVOList);
+    }
+
+    @Override
+    public Boolean calDeltaM0AndDuration() {
+        return xuyujieService.calDeltaM0AndDuration();
     }
 }

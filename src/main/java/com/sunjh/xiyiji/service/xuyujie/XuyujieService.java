@@ -67,4 +67,10 @@ public interface XuyujieService {
     List<NormTimeVO> calNormTimeAvg();
 
     List<NormTimeVO> calNormTimeAvgStep2();
+
+    List<String> getUserIdListByNormF0();
+
+    List<String> getNormTypeList();
+
+    Boolean calDeltaM0AndDuration();
 }

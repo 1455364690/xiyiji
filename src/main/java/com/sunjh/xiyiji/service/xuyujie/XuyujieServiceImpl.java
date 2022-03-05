@@ -6,6 +6,7 @@ import com.sunjh.xiyiji.controller.xuyujie.XuyujieController;
 import com.sunjh.xiyiji.dao.xuyujiedao.*;
 import com.sunjh.xiyiji.data.xuyujie.XuyujieQueryCondition;
 import com.sunjh.xiyiji.data.xuyujie.convertor.XuyujieUploadVOConvertor;
+import com.sunjh.xiyiji.data.xuyujie.enums.XuyujieFileTypeEnum;
 import com.sunjh.xiyiji.data.xuyujie.vo.NormTimeVO;
 import com.sunjh.xiyiji.data.xuyujie.vo.XuyujieUploadVO;
 import com.sunjh.xiyiji.data.xuyujiemodel.*;
@@ -24,6 +25,7 @@ import org.springframework.expression.Operation;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -511,6 +513,178 @@ public class XuyujieServiceImpl implements XuyujieService {
     public List<NormTimeVO> calNormTimeAvgStep2() {
         List<String> types = normTimeDAO.findAllType();
         return null;
+    }
+
+    @Override
+    public List<String> getUserIdListByNormF0() {
+        return null;
+    }
+
+    @Override
+    public List<String> getNormTypeList() {
+        return null;
+    }
+
+    final String DELTA_F0_FLAG = "DELTA_F0_";
+    final int TEN = 10;
+    final int TWENTY = 10;
+    final int THIRTY = 10;
+    final int FORTY = 10;
+    final int FIFTY = 10;
+    final int SIXTY = 10;
+
+    @Override
+    public Boolean calDeltaM0AndDuration() {
+
+        // getUserIdListByNormF0获取用户id列表，1-26，31-65，61-70，76-85
+        List<String> userNameList = this.getUserIdListByNormF0();
+        if (userNameList.isEmpty()) {
+            XiyijiLoggerUtil.error(logger, new Exception("获取userId失败"), "获取userId失败");
+            return false;
+        }
+        //获取type,只需要第三声和第二声，所以只需要保留结尾是2和4的
+        List<String> normTypeList = normTimeDAO.findAllType().stream().filter(s -> s.endsWith("2") || s.endsWith("4")).collect(Collectors.toList());
+
+        //循环根据uid计算
+        // 通过excursionsize保存meanf0数据，通过f0acc报错duration数据
+        List<ExcursionSize> meanF0ResultList = new LinkedList<>();
+        List<F0Acceleration> durationResultList = new LinkedList<>();
+        for (String userName : userNameList) {
+            for (String normType : normTypeList) {
+                //获取normTime
+                NormTime normTime = normTimeDAO.findByTypeAndUniqueName(normType, userName);
+                if (null == normTime) {
+                    XiyijiLoggerUtil.error(logger, new Exception("获取normF0失败"), "获取normF0失败,type:" + normType + ",uid:" + userName);
+                    return false;
+                }
+                //获取duration
+                List<Duration> durationList = durationDAO.findByNameAndTypeAndUserName(XuyujieFileTypeEnum.DURATION.value, normType, userName);
+                if (null == durationList || durationList.isEmpty()) {
+                    XiyijiLoggerUtil.error(logger, new Exception("获取duration失败"), "获取normF0失败,type:" + normType + ",uid:" + userName);
+                    return false;
+                }
+                Map<String, Object> m0ListAndDurationList = calM0ListAndDurationList(normTime, durationList.get(0));
+                if (null == m0ListAndDurationList || m0ListAndDurationList.size() != 2) {
+                    XiyijiLoggerUtil.error(logger, new Exception("计算失败"), "计算失败,type:" + normType + ",uid:" + userName);
+                    return false;
+                }
+                durationResultList.add((F0Acceleration) (m0ListAndDurationList.get(XuyujieFileTypeEnum.DURATION.value)));
+                meanF0ResultList.add((ExcursionSize) (m0ListAndDurationList.get(XuyujieFileTypeEnum.MEAN_F0.value)));
+            }
+
+        }
+        f0AccelerationDAO.saveAll(durationResultList);
+        excursionSizeDAO.saveAll(meanF0ResultList);
+        return true;
+    }
+
+    private Map<String, Object> calM0ListAndDurationList(NormTime normTime, Duration duration) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        List<Double> normDataList = JSON.parseArray(normTime.getData(), Double.class);
+        List<Double> newMeanF0DataList = new LinkedList<>();
+        List<Double> newDurationDataList = new LinkedList<>();
+        for (int normDataIndex = 0; normDataIndex < normDataList.size(); normDataIndex += 10) {
+            Double min = normDataList.get(normDataIndex);
+            int index = 0;
+            for (int i = 1; i < 10; i++) {
+                if (normDataIndex + i >= normDataList.size()) {
+                    break;
+                }
+                if (normDataList.get(normDataIndex + i) > min) {
+                    min = normDataList.get(normDataIndex + i);
+                    index = normDataIndex + i;
+                    break;
+                } else {
+                    min = normDataList.get(normDataIndex + i);
+                }
+            }
+            Double durationData = getDurationDataByIndex(duration, index);
+            if (null == durationData) {
+                XiyijiLoggerUtil.error(logger, new Exception("计算失败"), "计算失败,normTime:" + normTime + ",duration:" + duration);
+                return null;
+            }
+            newDurationDataList.add(durationData * index / 9d);
+            newMeanF0DataList.add(min - normDataList.get(normDataIndex));
+        }
+        result.put(XuyujieFileTypeEnum.DURATION.value, cloneF0AccelerationByDurationData(duration, newDurationDataList));
+        result.put(XuyujieFileTypeEnum.MEAN_F0.value, cloneF0AccelerationByDurationData(duration, newMeanF0DataList));
+        return result;
+    }
+
+    /**
+     * @param duration duration
+     * @param index    0/1/2/3/4/5
+     * @return double
+     */
+    private Double getDurationDataByIndex(Duration duration, int index) {
+        if (index < 0 || index >= 6) {
+            XiyijiLoggerUtil.info(logger, "计算失败,duration:" + duration + ",index:" + index);
+            return null;
+        }
+        try {
+            switch (index) {
+                case 0:
+                    return Double.parseDouble(duration.getDataOne());
+                case 1:
+                    return Double.parseDouble(duration.getDataTwo());
+                case 2:
+                    return Double.parseDouble(duration.getDataThree());
+                case 3:
+                    return Double.parseDouble(duration.getDataFour());
+                case 4:
+                    return Double.parseDouble(duration.getDataFive());
+                case 5:
+                    return Double.parseDouble(duration.getDataSix());
+                default:
+                    return null;
+            }
+        } catch (Exception e) {
+            XiyijiLoggerUtil.error(logger, new Exception("计算失败"), "计算失败,duration:" + duration + ",index:" + index);
+            return null;
+        }
+    }
+
+    /**
+     * 通过duration和data构造f0对象，存放的是duration数据
+     *
+     * @param duration
+     * @param durationDataList
+     * @return
+     */
+    private F0Acceleration cloneF0AccelerationByDurationData(Duration duration, List<Double> durationDataList) {
+        F0Acceleration f0Acceleration = new F0Acceleration();
+        f0Acceleration.setUserName(duration.getUserName());
+        f0Acceleration.setName(XuyujieFileTypeEnum.DURATION.value);
+
+        f0Acceleration.setDataOne(durationDataList.size() > 0 ? "" + durationDataList.get(0) : null);
+        f0Acceleration.setDataTwo(durationDataList.size() > 1 ? "" + durationDataList.get(1) : null);
+        f0Acceleration.setDataThree(durationDataList.size() > 2 ? "" + durationDataList.get(2) : null);
+        f0Acceleration.setDataFour(durationDataList.size() > 3 ? "" + durationDataList.get(3) : null);
+        f0Acceleration.setDataFive(durationDataList.size() > 4 ? "" + durationDataList.get(4) : null);
+        f0Acceleration.setDataSix(durationDataList.size() > 5 ? "" + durationDataList.get(5) : null);
+        return f0Acceleration;
+    }
+
+    /**
+     * 通过duration和data构造excursionSize，存放的是meanf0数据
+     *
+     * @param duration
+     * @param meanF0DataList
+     * @return
+     */
+    private ExcursionSize cloneExcursionSizeByDurationAndData(Duration duration, List<Double> meanF0DataList) {
+        ExcursionSize excursionSize = new ExcursionSize();
+        excursionSize.setUserName(duration.getUserName());
+        excursionSize.setName(XuyujieFileTypeEnum.MEAN_F0.value);
+        excursionSize.setType(duration.getType());
+
+        excursionSize.setDataOne(meanF0DataList.size() > 0 ? "" + meanF0DataList.get(0) : null);
+        excursionSize.setDataTwo(meanF0DataList.size() > 1 ? "" + meanF0DataList.get(1) : null);
+        excursionSize.setDataThree(meanF0DataList.size() > 2 ? "" + meanF0DataList.get(2) : null);
+        excursionSize.setDataFour(meanF0DataList.size() > 3 ? "" + meanF0DataList.get(3) : null);
+        excursionSize.setDataFive(meanF0DataList.size() > 4 ? "" + meanF0DataList.get(4) : null);
+        excursionSize.setDataSix(meanF0DataList.size() > 5 ? "" + meanF0DataList.get(5) : null);
+        return excursionSize;
     }
 
     public int countLength(XuyujieUploadVO vo) {

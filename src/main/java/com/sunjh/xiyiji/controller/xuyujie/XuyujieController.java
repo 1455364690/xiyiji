@@ -75,6 +75,12 @@ public class XuyujieController {
         return new BaseResult<List<XuyujieUploadVO>>().success(xuyujieUploadVOList);
     }
 
+    @GetMapping("api/xuyujie/calDeltaM0AndDuration")
+    public BaseResult<Boolean> calDeltaM0AndDuration() {
+        Boolean calResult = xuyujieLogic.calDeltaM0AndDuration();
+        return new BaseResult<Boolean>().success(calResult);
+    }
+
     @PostMapping("api/xuyujie/save_analyse_table_from_txt_file")
     public BaseResult<Boolean> save(@RequestBody List<XuyujieUploadVO> xuyuUploadVOList) {
         System.out.println(xuyuUploadVOList.size());
@@ -144,7 +150,7 @@ public class XuyujieController {
         for (int i = 0; i < map.size(); i++) {
             hashmap.put(i, false);
         }
-        for (int j = 0; j < map.size(); j+=3) {
+        for (int j = 0; j < map.size(); j += 3) {
             if (hashmap.get(j)) {
                 continue;
             }
@@ -175,8 +181,8 @@ public class XuyujieController {
             }
         }
 
-        for (int i=1;i<61;i++){
-            System.out.print(i+",");
+        for (int i = 1; i < 61; i++) {
+            System.out.print(i + ",");
         }
     }
 }

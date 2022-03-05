@@ -12,4 +12,9 @@ public class XiyijiLoggerUtil {
     public static void info(Logger logger, String obj) {
         logger.info(obj);
     }
+
+    public static void error(Logger logger, Throwable e, String obj) {
+        logger.error(obj, e);
+    }
+
 }

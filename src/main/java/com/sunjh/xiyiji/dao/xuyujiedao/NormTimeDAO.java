@@ -28,6 +28,15 @@ public interface NormTimeDAO extends CrudRepository<NormTime, Long> {
 
     List<NormTime> findAllByType(String type);
 
+    /**
+     * 根据type与uid获取信息
+     *
+     * @param type type
+     * @param uniqueName unique
+     * @return normtime
+     */
+    NormTime findByTypeAndUniqueName(String type, String uniqueName);
+
     @Query(value = "select distinct(d.type) from NormTime d where 1=1")
     List<String> findAllType();
 }
