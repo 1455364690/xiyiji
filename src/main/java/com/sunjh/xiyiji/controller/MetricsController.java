@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MetricsController extends BaseController{
     @GetMapping("metrics")
     public String metrics(){
-        return "test";
+        return "test.txt";
     }
 
 }

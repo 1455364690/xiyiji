@@ -16,7 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -109,4 +112,71 @@ public class XuyujieController {
         return new BaseResult<String>().success(DOWNLOAD_URL_PREFIX + downloadUrl);
     }
 
+    public static void main2(String[] args) throws Exception {
+        File file = new File("/Users/sunjh/IdeaProjects/xiyiji/test.txt");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        String line = null;
+        List<List<String>> map = new LinkedList<>();
+        while (null != (line = bufferedReader.readLine())) {
+            map.add(Arrays.stream(line.split("\t")).collect(Collectors.toList()));
+        }
+        for (int i = 0; i < map.size(); i += 3) {
+            List<String> list1 = map.get(i);
+            List<String> list2 = map.get(i + 1);
+            List<String> list3 = map.get(i + 2);
+            System.out.print(list1.get(0) + "-" + list1.get(2) + "  ");
+            for (int j = 3; j < list1.size(); j++) {
+                System.out.print(String.format("%.3f", (Double.parseDouble(list1.get(j)) + Double.parseDouble(list2.get(j)) + Double.parseDouble(list3.get(j))) / 3) + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        File file = new File("/Users/sunjh/IdeaProjects/xiyiji/test2.txt");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        String line = null;
+        List<List<String>> map = new LinkedList<>();
+        while (null != (line = bufferedReader.readLine())) {
+            map.add(Arrays.stream(line.split("\t")).collect(Collectors.toList()));
+        }
+        Map<Integer, Boolean> hashmap = new HashMap<>();
+        for (int i = 0; i < map.size(); i++) {
+            hashmap.put(i, false);
+        }
+        for (int j = 0; j < map.size(); j+=3) {
+            if (hashmap.get(j)) {
+                continue;
+            }
+            int tmp = 0;
+            for (tmp = 0; tmp < 3; tmp++) {
+                if (j + tmp >= map.size()) {
+                    break;
+                }
+                hashmap.put(j + tmp, true);
+                List<String> list = map.get(j + tmp);
+                System.out.print("[");
+                for (int i = 3; i < list.size() - 1; i++) {
+                    System.out.print("" + list.get(i) + ",");
+                }
+                System.out.println("" + list.get(list.size() - 1) + "],");
+            }
+            for (tmp = 12; tmp < 15; tmp++) {
+                if (j + tmp >= map.size()) {
+                    break;
+                }
+                hashmap.put(j + tmp, true);
+                List<String> list = map.get(j + tmp);
+                System.out.print("[");
+                for (int i = 3; i < list.size() - 1; i++) {
+                    System.out.print("" + list.get(i) + ",");
+                }
+                System.out.println("" + list.get(list.size() - 1) + "],");
+            }
+        }
+
+        for (int i=1;i<61;i++){
+            System.out.print(i+",");
+        }
+    }
 }

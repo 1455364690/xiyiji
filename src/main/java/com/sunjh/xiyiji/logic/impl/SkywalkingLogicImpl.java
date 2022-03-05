@@ -23,7 +23,7 @@ public class SkywalkingLogicImpl implements SkywalkingLogic {
     private String skywalkingUrl;
 
 //    @Scheduled(cron = "*/5 * * * * ?")
-//    public void test() {
+//    public void test.txt() {
 //        System.out.println("ttttttt");
 //    }
 

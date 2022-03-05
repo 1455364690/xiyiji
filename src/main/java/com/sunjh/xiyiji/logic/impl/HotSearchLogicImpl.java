@@ -22,6 +22,6 @@ public class HotSearchLogicImpl implements HotSearchLogic {
     @Override
     public String test() {
         return httpService.get("https://jsnjsw.cnki.net/api/DataCenter/GetMapData?zCode=110&getflag=ALL");
-        //return hotSearchService.test();
+        //return hotSearchService.test.txt();
     }
 }
